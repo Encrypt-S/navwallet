@@ -20,7 +20,7 @@ import (
 
 const (
 	// LatestMgrVersion is the most recent manager version.
-	LatestMgrVersion = 4
+	LatestMgrVersion = 5
 )
 
 var (
@@ -2232,6 +2232,11 @@ func upgradeManager(db walletdb.DB, namespaceKey []byte, pubPassPhrase []byte,
 // * acctIDIdxBucketName
 // * metaBucketName
 func upgradeToVersion3(ns walletdb.ReadWriteBucket, seed, privPassPhrase, pubPassPhrase []byte, chainParams *chaincfg.Params) error {
+	priorScope := &KeyScope{
+		Purpose: 44,
+		Coin:    chainParams.HDCoinType,
+	}
+
 	err := func() error {
 		currentMgrVersion := uint32(3)
 
@@ -2254,7 +2259,9 @@ func upgradeToVersion3(ns walletdb.ReadWriteBucket, seed, privPassPhrase, pubPas
 		}
 
 		// Derive the cointype key according to BIP0044.
-		coinTypeKeyPriv, err := deriveCoinTypeKey(root, chainParams.HDCoinType)
+		coinTypeKeyPriv, err := deriveCoinTypeKey(
+			root, *priorScope,
+		)
 		if err != nil {
 			str := "failed to derive cointype extended key"
 			return managerError(ErrKeyChain, str, err)
@@ -2280,7 +2287,7 @@ func upgradeToVersion3(ns walletdb.ReadWriteBucket, seed, privPassPhrase, pubPas
 		}
 
 		// Save the encrypted cointype keys to the database.
-		err = putCoinTypeKeys(ns, coinTypePubEnc, coinTypePrivEnc)
+		err = putCoinTypeKeys(ns, priorScope, coinTypePubEnc, coinTypePrivEnc)
 		if err != nil {
 			return err
 		}
@@ -2304,22 +2311,22 @@ func upgradeToVersion3(ns walletdb.ReadWriteBucket, seed, privPassPhrase, pubPas
 		}
 
 		// Initialize metadata for all keys
-		if err := putLastAccount(ns, DefaultAccountNum); err != nil {
+		if err := putLastAccount(ns, priorScope, DefaultAccountNum); err != nil {
 			return err
 		}
 
 		// Update default account indexes
-		if err := putAccountIDIndex(ns, DefaultAccountNum, defaultAccountName); err != nil {
+		if err := putAccountIDIndex(ns, priorScope, DefaultAccountNum, defaultAccountName); err != nil {
 			return err
 		}
-		if err := putAccountNameIndex(ns, DefaultAccountNum, defaultAccountName); err != nil {
+		if err := putAccountNameIndex(ns, priorScope, DefaultAccountNum, defaultAccountName); err != nil {
 			return err
 		}
 		// Update imported account indexes
-		if err := putAccountIDIndex(ns, ImportedAddrAccount, ImportedAddrAccountName); err != nil {
+		if err := putAccountIDIndex(ns, priorScope, ImportedAddrAccount, ImportedAddrAccountName); err != nil {
 			return err
 		}
-		if err := putAccountNameIndex(ns, ImportedAddrAccount, ImportedAddrAccountName); err != nil {
+		if err := putAccountNameIndex(ns, priorScope, ImportedAddrAccount, ImportedAddrAccountName); err != nil {
 			return err
 		}
 
@@ -2329,7 +2336,7 @@ func upgradeToVersion3(ns walletdb.ReadWriteBucket, seed, privPassPhrase, pubPas
 		}
 
 		// Save "" alias for default account name for backward compat
-		return putAccountNameIndex(ns, DefaultAccountNum, "")
+		return putAccountNameIndex(ns, priorScope, DefaultAccountNum, "")
 	}()
 	if err != nil {
 		return maybeConvertDbError(err)
@@ -2341,6 +2348,11 @@ func upgradeToVersion3(ns walletdb.ReadWriteBucket, seed, privPassPhrase, pubPas
 // default account remains unchanged (even if it was modified by the user), but
 // the empty string alias to the default account is removed.
 func upgradeToVersion4(ns walletdb.ReadWriteBucket, pubPassPhrase []byte) error {
+	priorScope := &KeyScope{
+		Purpose: 44,
+		Coin:    0,
+	}
+
 	err := func() error {
 		// Write new manager version.
 		err := putManagerVersion(ns, 4)
@@ -2350,11 +2362,11 @@ func upgradeToVersion4(ns walletdb.ReadWriteBucket, pubPassPhrase []byte) error 
 
 		// Lookup the old account info to determine the real name of the
 		// default account.  All other names will be removed.
-		acctInfoIface, err := fetchAccountInfo(ns, DefaultAccountNum)
+		acctInfoIface, err := fetchAccountInfo(ns, priorScope, DefaultAccountNum)
 		if err != nil {
 			return err
 		}
-		acctInfo, ok := acctInfoIface.(*dbBIP0044AccountRow)
+		acctInfo, ok := acctInfoIface.(*dbDefaultAccountRow)
 		if !ok {
 			str := fmt.Sprintf("unsupported account type %T", acctInfoIface)
 			return managerError(ErrDatabase, str, nil)
@@ -2390,7 +2402,7 @@ func upgradeToVersion4(ns walletdb.ReadWriteBucket, pubPassPhrase []byte) error 
 		// The account number to name index may map to the wrong name,
 		// so rewrite the entry with the true name from the account row
 		// instead of leaving it set to an incorrect alias.
-		err = putAccountIDIndex(ns, DefaultAccountNum, acctInfo.name)
+		err = putAccountIDIndex(ns, priorScope, DefaultAccountNum, acctInfo.name)
 		if err != nil {
 			const str = "account number to name index could not be " +
 				"rewritten with actual account name"
@@ -2399,7 +2411,7 @@ func upgradeToVersion4(ns walletdb.ReadWriteBucket, pubPassPhrase []byte) error 
 
 		// Ensure that the true name for the default account maps
 		// forwards and backwards to the default account number.
-		name, err := fetchAccountName(ns, DefaultAccountNum)
+		name, err := fetchAccountName(ns, priorScope, DefaultAccountNum)
 		if err != nil {
 			return err
 		}
@@ -2407,7 +2419,7 @@ func upgradeToVersion4(ns walletdb.ReadWriteBucket, pubPassPhrase []byte) error 
 			const str = "account name index does not map default account number to correct name"
 			return managerError(ErrUpgrade, str, nil)
 		}
-		acct, err := fetchAccountByName(ns, acctInfo.name)
+		acct, err := fetchAccountByName(ns, priorScope, acctInfo.name)
 		if err != nil {
 			return err
 		}
@@ -2418,7 +2430,7 @@ func upgradeToVersion4(ns walletdb.ReadWriteBucket, pubPassPhrase []byte) error 
 
 		// Ensure that looking up the default account by the old name
 		// cannot succeed.
-		_, err = fetchAccountByName(ns, oldName)
+		_, err = fetchAccountByName(ns, priorScope, oldName)
 		if err == nil {
 			const str = "default account exists under old name"
 			return managerError(ErrUpgrade, str, nil)
