@@ -3,11 +3,11 @@ package chain
 import (
 	"time"
 
-	"github.com/roasbeef/btcd/chaincfg/chainhash"
-	"github.com/roasbeef/btcd/wire"
-	"github.com/roasbeef/btcutil"
-	"github.com/roasbeef/btcwallet/waddrmgr"
-	"github.com/roasbeef/btcwallet/wtxmgr"
+	"github.com/aguycalled/navd/chaincfg/chainhash"
+	"github.com/aguycalled/navd/wire"
+	"github.com/aguycalled/navutil"
+	"github.com/aguycalled/navwallet/waddrmgr"
+	"github.com/aguycalled/navwallet/wtxmgr"
 )
 
 // BackEnds returns a list of the available back ends.
@@ -15,13 +15,13 @@ import (
 func BackEnds() []string {
 	return []string{
 		"bitcoind",
-		"btcd",
+		"navd",
 		"neutrino",
 	}
 }
 
 // Interface allows more than one backing blockchain source, such as a
-// btcd RPC chain server, or an SPV library, as long as we write a driver for
+// navd RPC chain server, or an SPV library, as long as we write a driver for
 // it.
 type Interface interface {
 	Start() error
@@ -33,8 +33,8 @@ type Interface interface {
 	GetBlockHeader(*chainhash.Hash) (*wire.BlockHeader, error)
 	BlockStamp() (*waddrmgr.BlockStamp, error)
 	SendRawTransaction(*wire.MsgTx, bool) (*chainhash.Hash, error)
-	Rescan(*chainhash.Hash, []btcutil.Address, []*wire.OutPoint) error
-	NotifyReceived([]btcutil.Address) error
+	Rescan(*chainhash.Hash, []navutil.Address, []*wire.OutPoint) error
+	NotifyReceived([]navutil.Address) error
 	NotifyBlocks() error
 	Notifications() <-chan interface{}
 	BackEnd() string

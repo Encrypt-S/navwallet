@@ -10,15 +10,15 @@ import (
 	"time"
 
 	"github.com/lightninglabs/gozmq"
-	"github.com/roasbeef/btcd/btcjson"
-	"github.com/roasbeef/btcd/chaincfg"
-	"github.com/roasbeef/btcd/chaincfg/chainhash"
-	"github.com/roasbeef/btcd/rpcclient"
-	"github.com/roasbeef/btcd/txscript"
-	"github.com/roasbeef/btcd/wire"
-	"github.com/roasbeef/btcutil"
-	"github.com/roasbeef/btcwallet/waddrmgr"
-	"github.com/roasbeef/btcwallet/wtxmgr"
+	"github.com/aguycalled/navd/navjson"
+	"github.com/aguycalled/navd/chaincfg"
+	"github.com/aguycalled/navd/chaincfg/chainhash"
+	"github.com/aguycalled/navd/rpcclient"
+	"github.com/aguycalled/navd/txscript"
+	"github.com/aguycalled/navd/wire"
+	"github.com/aguycalled/navutil"
+	"github.com/aguycalled/navwallet/waddrmgr"
+	"github.com/aguycalled/navwallet/wtxmgr"
 )
 
 // BitcoindClient represents a persistent client connection to a bitcoind server
@@ -153,7 +153,7 @@ func (c *BitcoindClient) GetBlock(hash *chainhash.Hash) (*wire.MsgBlock,
 
 // GetBlockVerbose returns a verbose block from the hash.
 func (c *BitcoindClient) GetBlockVerbose(hash *chainhash.Hash) (
-	*btcjson.GetBlockVerboseResult, error) {
+	*navjson.GetBlockVerboseResult, error) {
 	return c.client.GetBlockVerbose(hash)
 }
 
@@ -170,24 +170,24 @@ func (c *BitcoindClient) GetBlockHeader(
 
 // GetBlockHeaderVerbose returns a block header from the hash.
 func (c *BitcoindClient) GetBlockHeaderVerbose(hash *chainhash.Hash) (
-	*btcjson.GetBlockHeaderVerboseResult, error) {
+	*navjson.GetBlockHeaderVerboseResult, error) {
 	return c.client.GetBlockHeaderVerbose(hash)
 }
 
 // GetRawTransactionVerbose returns a transaction from the tx hash.
 func (c *BitcoindClient) GetRawTransactionVerbose(hash *chainhash.Hash) (
-	*btcjson.TxRawResult, error) {
+	*navjson.TxRawResult, error) {
 	return c.client.GetRawTransactionVerbose(hash)
 }
 
 // GetTxOut returns a txout from the outpoint info provided.
 func (c *BitcoindClient) GetTxOut(txHash *chainhash.Hash, index uint32,
-	mempool bool) (*btcjson.GetTxOutResult, error) {
+	mempool bool) (*navjson.GetTxOutResult, error) {
 	return c.client.GetTxOut(txHash, index, mempool)
 }
 
 // NotifyReceived updates the watch list with the passed addresses.
-func (c *BitcoindClient) NotifyReceived(addrs []btcutil.Address) error {
+func (c *BitcoindClient) NotifyReceived(addrs []navutil.Address) error {
 	select {
 	case c.rescanUpdate <- addrs:
 	case <-c.quit:
@@ -219,7 +219,7 @@ func (c *BitcoindClient) NotifyBlocks() error {
 }
 
 // LoadTxFilter updates the transaction watchlists for the client. Acceptable
-// arguments after `reset` are any combination of []btcutil.Address,
+// arguments after `reset` are any combination of []navutil.Address,
 // []wire.OutPoint, []*wire.OutPoint, []chainhash.Hash, and []*chainhash.Hash.
 func (c *BitcoindClient) LoadTxFilter(reset bool,
 	watchLists ...interface{}) error {
@@ -249,7 +249,7 @@ func (c *BitcoindClient) LoadTxFilter(reset bool,
 			sendList(list)
 		case []*wire.OutPoint:
 			sendList(list)
-		case []btcutil.Address:
+		case []navutil.Address:
 			sendList(list)
 		case []chainhash.Hash:
 			sendList(list)
@@ -263,11 +263,11 @@ func (c *BitcoindClient) LoadTxFilter(reset bool,
 }
 
 // RescanBlocks rescans any blocks passed, returning only the blocks that
-// matched as []btcjson.BlockDetails.
+// matched as []navjson.BlockDetails.
 func (c *BitcoindClient) RescanBlocks(blockHashes []chainhash.Hash) (
-	[]btcjson.RescannedBlock, error) {
+	[]navjson.RescannedBlock, error) {
 
-	rescannedBlocks := make([]btcjson.RescannedBlock, 0, len(blockHashes))
+	rescannedBlocks := make([]navjson.RescannedBlock, 0, len(blockHashes))
 	for _, hash := range blockHashes {
 		header, err := c.GetBlockHeaderVerbose(&hash)
 		if err != nil {
@@ -286,7 +286,7 @@ func (c *BitcoindClient) RescanBlocks(blockHashes []chainhash.Hash) (
 		relevantTxes, err := c.filterBlock(block, header.Height,
 			false)
 		if len(relevantTxes) > 0 {
-			rescannedBlock := btcjson.RescannedBlock{
+			rescannedBlock := navjson.RescannedBlock{
 				Hash: hash.String(),
 			}
 			for _, tx := range relevantTxes {
@@ -305,7 +305,7 @@ func (c *BitcoindClient) RescanBlocks(blockHashes []chainhash.Hash) (
 // Rescan rescans from the block with the given hash until the current block,
 // after adding the passed addresses and outpoints to the client's watch list.
 func (c *BitcoindClient) Rescan(blockHash *chainhash.Hash,
-	addrs []btcutil.Address, outPoints []*wire.OutPoint) error {
+	addrs []navutil.Address, outPoints []*wire.OutPoint) error {
 
 	if blockHash == nil {
 		return errors.New("rescan requires a starting block hash")
@@ -483,7 +483,7 @@ func (c *BitcoindClient) onBlockDisconnected(hash *chainhash.Hash, height int32,
 }
 
 func (c *BitcoindClient) onRelevantTx(rec *wtxmgr.TxRecord,
-	block *btcjson.BlockDetails) {
+	block *navjson.BlockDetails) {
 	blk, err := parseBlock(block)
 	if err != nil {
 		// Log and drop improper notification.
@@ -514,7 +514,7 @@ func (c *BitcoindClient) onRescanFinished(hash *chainhash.Hash, height int32, bl
 }
 
 // socketHandler reads events from the ZMQ socket, processes them as
-// appropriate, and queues them as btcd or neutrino would.
+// appropriate, and queues them as navd or neutrino would.
 func (c *BitcoindClient) socketHandler(zmqClient *gozmq.Conn) {
 	defer c.wg.Done()
 	defer zmqClient.Close()
@@ -552,7 +552,7 @@ mainLoop:
 					c.watchOutPoints =
 						make(map[wire.OutPoint]struct{})
 					c.clientMtx.Unlock()
-				case []btcutil.Address:
+				case []navutil.Address:
 					// We're updating monitored addresses.
 					c.clientMtx.Lock()
 					for _, addr := range e {
@@ -855,7 +855,7 @@ func (c *BitcoindClient) rescan(hash *chainhash.Hash) error {
 					lastHeader.Height,
 					time.Unix(lastHeader.Time, 0))
 				headers.Remove(headers.Back())
-				lastHeader = headers.Back().Value.(*btcjson.
+				lastHeader = headers.Back().Value.(*navjson.
 					GetBlockHeaderVerboseResult)
 				lastHash, err = chainhash.NewHashFromStr(
 					lastHeader.Hash)
@@ -873,7 +873,7 @@ func (c *BitcoindClient) rescan(hash *chainhash.Hash) error {
 		}
 
 		// We are at the latest known block, so we notify.
-		lastHeader = &btcjson.GetBlockHeaderVerboseResult{
+		lastHeader = &navjson.GetBlockHeaderVerboseResult{
 			Hash:         block.BlockHash().String(),
 			Height:       i,
 			PreviousHash: block.Header.PrevBlock.String(),
@@ -912,7 +912,7 @@ func (c *BitcoindClient) filterBlock(block *wire.MsgBlock, height int32,
 		block.BlockHash(), len(block.Transactions))
 	// Create block details for notifications.
 	blockHash := block.BlockHash()
-	blockDetails := &btcjson.BlockDetails{
+	blockDetails := &navjson.BlockDetails{
 		Hash:   blockHash.String(),
 		Height: height,
 		Time:   block.Header.Timestamp.Unix(),
@@ -958,10 +958,10 @@ func (c *BitcoindClient) filterBlock(block *wire.MsgBlock, height int32,
 
 // filterTx filters a single transaction against the client's watch list.
 func (c *BitcoindClient) filterTx(tx *wire.MsgTx,
-	blockDetails *btcjson.BlockDetails, notify bool) (bool,
+	blockDetails *navjson.BlockDetails, notify bool) (bool,
 	*wtxmgr.TxRecord, error) {
 
-	txDetails := btcutil.NewTx(tx)
+	txDetails := navutil.NewTx(tx)
 	if blockDetails != nil {
 		txDetails.SetIndex(blockDetails.Index)
 	}

@@ -12,8 +12,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/roasbeef/btcutil/hdkeychain"
-	"github.com/roasbeef/btcwallet/internal/legacy/keystore"
+	"github.com/aguycalled/navutil/hdkeychain"
+	"github.com/aguycalled/navwallet/internal/legacy/keystore"
 	"github.com/btcsuite/golangcrypto/ssh/terminal"
 )
 

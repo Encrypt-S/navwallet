@@ -10,8 +10,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/roasbeef/btcwallet/walletdb"
-	_ "github.com/roasbeef/btcwallet/walletdb/bdb"
+	"github.com/aguycalled/navwallet/walletdb"
+	_ "github.com/aguycalled/navwallet/walletdb/bdb"
 )
 
 // dbType is the database type name for this driver.

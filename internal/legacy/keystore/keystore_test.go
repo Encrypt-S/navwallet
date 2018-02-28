@@ -11,11 +11,11 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/roasbeef/btcd/btcec"
-	"github.com/roasbeef/btcd/chaincfg"
-	"github.com/roasbeef/btcd/chaincfg/chainhash"
-	"github.com/roasbeef/btcd/txscript"
-	"github.com/roasbeef/btcutil"
+	"github.com/aguycalled/navd/navec"
+	"github.com/aguycalled/navd/chaincfg"
+	"github.com/aguycalled/navd/chaincfg/chainhash"
+	"github.com/aguycalled/navd/txscript"
+	"github.com/aguycalled/navutil"
 
 	"github.com/davecgh/go-spew/spew"
 )
@@ -278,21 +278,21 @@ func TestChaining(t *testing.T) {
 
 		// Sign data with the next private keys and verify signature with
 		// the next pubkeys.
-		pubkeyUncompressed, err := btcec.ParsePubKey(nextPubUncompressedFromPub, btcec.S256())
+		pubkeyUncompressed, err := navec.ParsePubKey(nextPubUncompressedFromPub, navec.S256())
 		if err != nil {
 			t.Errorf("%s: Unable to parse next uncompressed pubkey: %v", test.name, err)
 			return
 		}
-		pubkeyCompressed, err := btcec.ParsePubKey(nextPubCompressedFromPub, btcec.S256())
+		pubkeyCompressed, err := navec.ParsePubKey(nextPubCompressedFromPub, navec.S256())
 		if err != nil {
 			t.Errorf("%s: Unable to parse next compressed pubkey: %v", test.name, err)
 			return
 		}
-		privkeyUncompressed := &btcec.PrivateKey{
+		privkeyUncompressed := &navec.PrivateKey{
 			PublicKey: *pubkeyUncompressed.ToECDSA(),
 			D:         new(big.Int).SetBytes(nextPrivUncompressed),
 		}
-		privkeyCompressed := &btcec.PrivateKey{
+		privkeyCompressed := &navec.PrivateKey{
 			PublicKey: *pubkeyCompressed.ToECDSA(),
 			D:         new(big.Int).SetBytes(nextPrivCompressed),
 		}
@@ -305,7 +305,7 @@ func TestChaining(t *testing.T) {
 		}
 		ok := sig.Verify([]byte(data), privkeyUncompressed.PubKey())
 		if !ok {
-			t.Errorf("%s: btcec signature verification failed for next keypair (chained from uncompressed pubkey).",
+			t.Errorf("%s: navec signature verification failed for next keypair (chained from uncompressed pubkey).",
 				test.name)
 			return
 		}
@@ -317,7 +317,7 @@ func TestChaining(t *testing.T) {
 		}
 		ok = sig.Verify([]byte(data), privkeyCompressed.PubKey())
 		if !ok {
-			t.Errorf("%s: btcec signature verification failed for next keypair (chained from compressed pubkey).",
+			t.Errorf("%s: navec signature verification failed for next keypair (chained from compressed pubkey).",
 				test.name)
 			return
 		}
@@ -435,7 +435,7 @@ func TestWalletPubkeyChaining(t *testing.T) {
 	pubKey := pkinfo.PubKey()
 	ok := sig.Verify(hash, pubKey)
 	if !ok {
-		t.Errorf("btcec signature verification failed; address's pubkey mismatches the privkey.")
+		t.Errorf("navec signature verification failed; address's pubkey mismatches the privkey.")
 		return
 	}
 
@@ -467,7 +467,7 @@ func TestWalletPubkeyChaining(t *testing.T) {
 	pubKey = nextPkInfo.PubKey()
 	ok = sig.Verify(hash, pubKey)
 	if !ok {
-		t.Errorf("btcec signature verification failed; next address's keypair does not match.")
+		t.Errorf("navec signature verification failed; next address's keypair does not match.")
 		return
 	}
 
@@ -578,7 +578,7 @@ func TestWatchingWalletExport(t *testing.T) {
 
 	// Test that ExtendActiveAddresses for the watching wallet match
 	// manually requested addresses of the original wallet.
-	var newAddrs []btcutil.Address
+	var newAddrs []navutil.Address
 	for i := 0; i < 10; i++ {
 		addr, err := w.NextChainedAddress(createdAt)
 		if err != nil {
@@ -664,8 +664,8 @@ func TestWatchingWalletExport(t *testing.T) {
 		t.Errorf("Nonsensical func ExportWatchingWallet returned no or incorrect error: %v", err)
 		return
 	}
-	pk, _ := btcec.PrivKeyFromBytes(btcec.S256(), make([]byte, 32))
-	wif, err := btcutil.NewWIF(pk, tstNetParams, true)
+	pk, _ := navec.PrivKeyFromBytes(navec.S256(), make([]byte, 32))
+	wif, err := navutil.NewWIF(pk, tstNetParams, true)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -690,7 +690,7 @@ func TestImportPrivateKey(t *testing.T) {
 		return
 	}
 
-	pk, err := btcec.NewPrivateKey(btcec.S256())
+	pk, err := navec.NewPrivateKey(navec.S256())
 	if err != nil {
 		t.Error("Error generating private key: " + err.Error())
 		return
@@ -704,7 +704,7 @@ func TestImportPrivateKey(t *testing.T) {
 	}
 
 	// import priv key
-	wif, err := btcutil.NewWIF((*btcec.PrivateKey)(pk), tstNetParams, false)
+	wif, err := navutil.NewWIF((*navec.PrivateKey)(pk), tstNetParams, false)
 	if err != nil {
 		t.Fatal(err)
 	}

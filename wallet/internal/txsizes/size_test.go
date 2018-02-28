@@ -5,8 +5,8 @@ import (
 	"encoding/hex"
 	"testing"
 
-	"github.com/roasbeef/btcd/wire"
-	. "github.com/roasbeef/btcwallet/wallet/internal/txsizes"
+	"github.com/aguycalled/navd/wire"
+	. "github.com/aguycalled/navwallet/wallet/internal/txsizes"
 )
 
 const (

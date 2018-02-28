@@ -6,9 +6,9 @@
 package wallet
 
 import (
-	"github.com/roasbeef/btcd/chaincfg/chainhash"
-	"github.com/roasbeef/btcwallet/walletdb"
-	"github.com/roasbeef/btcwallet/wtxmgr"
+	"github.com/aguycalled/navd/chaincfg/chainhash"
+	"github.com/aguycalled/navwallet/walletdb"
+	"github.com/aguycalled/navwallet/wtxmgr"
 )
 
 type unstableAPI struct {

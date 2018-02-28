@@ -10,15 +10,15 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/btcsuite/btclog"
+	"github.com/aguycalled/navlog"
 	"github.com/jrick/logrotate/rotator"
 	"github.com/lightninglabs/neutrino"
-	"github.com/roasbeef/btcd/rpcclient"
-	"github.com/roasbeef/btcwallet/chain"
-	"github.com/roasbeef/btcwallet/rpc/legacyrpc"
-	"github.com/roasbeef/btcwallet/rpc/rpcserver"
-	"github.com/roasbeef/btcwallet/wallet"
-	"github.com/roasbeef/btcwallet/wtxmgr"
+	"github.com/aguycalled/navd/rpcclient"
+	"github.com/aguycalled/navwallet/chain"
+	"github.com/aguycalled/navwallet/rpc/legacyrpc"
+	"github.com/aguycalled/navwallet/rpc/rpcserver"
+	"github.com/aguycalled/navwallet/wallet"
+	"github.com/aguycalled/navwallet/wtxmgr"
 )
 
 // logWriter implements an io.Writer that outputs to both standard output and
@@ -43,7 +43,7 @@ var (
 	// backendLog is the logging backend used to create all subsystem loggers.
 	// The backend must not be used before the log rotator has been initialized,
 	// or data races and/or nil pointer dereferences will occur.
-	backendLog = btclog.NewBackend(logWriter{})
+	backendLog = navlog.NewBackend(logWriter{})
 
 	// logRotator is one of the logging outputs.  It should be closed on
 	// application shutdown.
@@ -74,7 +74,7 @@ func init() {
 }
 
 // subsystemLoggers maps each subsystem identifier to its associated logger.
-var subsystemLoggers = map[string]btclog.Logger{
+var subsystemLoggers = map[string]navlog.Logger{
 	"BTCW": log,
 	"WLLT": walletLog,
 	"TMGR": txmgrLog,
@@ -118,7 +118,7 @@ func setLogLevel(subsystemID string, logLevel string) {
 	}
 
 	// Defaults to info if the log level is invalid.
-	level, _ := btclog.LevelFromString(logLevel)
+	level, _ := navlog.LevelFromString(logLevel)
 	logger.SetLevel(level)
 }
 
