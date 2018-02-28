@@ -19,7 +19,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/aguycalled/navd/navjson"
+	"github.com/aguycalled/navd/btcjson"
 	"github.com/aguycalled/navwallet/chain"
 	"github.com/aguycalled/navwallet/wallet"
 	"github.com/btcsuite/websocket"
@@ -271,7 +271,7 @@ func (s *Server) SetChainServer(chainClient chain.Interface) {
 // NOTE: These handlers do not handle special cases, such as the authenticate
 // method.  Each of these must be checked beforehand (the method is already
 // known) and handled accordingly.
-func (s *Server) handlerClosure(request *navjson.Request) lazyHandler {
+func (s *Server) handlerClosure(request *btcjson.Request) lazyHandler {
 	s.handlerMu.Lock()
 	// With the lock held, make copies of these pointers for the closure.
 	wallet := s.wallet
@@ -337,7 +337,7 @@ func throttled(threshold int64, h http.Handler) http.Handler {
 // sanitizeRequest returns a sanitized string for the request which may be
 // safely logged.  It is intended to strip private keys, passphrases, and any
 // other secrets from request parameters before they may be saved to a log file.
-func sanitizeRequest(r *navjson.Request) string {
+func sanitizeRequest(r *btcjson.Request) string {
 	// These are considered unsafe to log, so sanitize parameters.
 	switch r.Method {
 	case "encryptwallet", "importprivkey", "importwallet",
@@ -354,7 +354,7 @@ func sanitizeRequest(r *navjson.Request) string {
 
 // idPointer returns a pointer to the passed ID, or nil if the interface is nil.
 // Interface pointers are usually a red flag of doing something incorrectly,
-// but this is only implemented here to work around an oddity with navjson,
+// but this is only implemented here to work around an oddity with btcjson,
 // which uses empty interface pointers for response IDs.
 func idPointer(id interface{}) (p *interface{}) {
 	if id != nil {
@@ -366,12 +366,12 @@ func idPointer(id interface{}) (p *interface{}) {
 // invalidAuth checks whether a websocket request is a valid (parsable)
 // authenticate request and checks the supplied username and passphrase
 // against the server auth.
-func (s *Server) invalidAuth(req *navjson.Request) bool {
-	cmd, err := navjson.UnmarshalCmd(req)
+func (s *Server) invalidAuth(req *btcjson.Request) bool {
+	cmd, err := btcjson.UnmarshalCmd(req)
 	if err != nil {
 		return false
 	}
-	authCmd, ok := cmd.(*navjson.AuthenticateCmd)
+	authCmd, ok := cmd.(*btcjson.AuthenticateCmd)
 	if !ok {
 		return false
 	}
@@ -412,7 +412,7 @@ out:
 				break out
 			}
 
-			var req navjson.Request
+			var req btcjson.Request
 			err := json.Unmarshal(reqBytes, &req)
 			if err != nil {
 				if !wsc.authenticated {
@@ -420,7 +420,7 @@ out:
 					break out
 				}
 				resp := makeResponse(req.ID, nil,
-					navjson.ErrRPCInvalidRequest)
+					btcjson.ErrRPCInvalidRequest)
 				mresp, err := json.Marshal(resp)
 				// We expect the marshal to succeed.  If it
 				// doesn't, it indicates some non-marshalable
@@ -481,7 +481,7 @@ out:
 				wsc.wg.Add(1)
 				go func() {
 					resp, jsonErr := f()
-					mresp, err := navjson.MarshalResponse(req.ID, resp, jsonErr)
+					mresp, err := btcjson.MarshalResponse(req.ID, resp, jsonErr)
 					if err != nil {
 						log.Errorf("Unable to marshal response: %v", err)
 					} else {
@@ -577,10 +577,10 @@ func (s *Server) postClientRPC(w http.ResponseWriter, r *http.Request) {
 	// If unfound, the request is sent to the chain server for further
 	// processing.  While checking the methods, disallow authenticate
 	// requests, as they are invalid for HTTP POST clients.
-	var req navjson.Request
+	var req btcjson.Request
 	err = json.Unmarshal(rpcRequest, &req)
 	if err != nil {
-		resp, err := navjson.MarshalResponse(req.ID, nil, navjson.ErrRPCInvalidRequest)
+		resp, err := btcjson.MarshalResponse(req.ID, nil, btcjson.ErrRPCInvalidRequest)
 		if err != nil {
 			log.Errorf("Unable to marshal response: %v", err)
 			http.Error(w, "500 Internal Server Error",
@@ -598,7 +598,7 @@ func (s *Server) postClientRPC(w http.ResponseWriter, r *http.Request) {
 	// Create the response and error from the request.  Two special cases
 	// are handled for the authenticate and stop request methods.
 	var res interface{}
-	var jsonErr *navjson.RPCError
+	var jsonErr *btcjson.RPCError
 	var stop bool
 	switch req.Method {
 	case "authenticate":
@@ -612,7 +612,7 @@ func (s *Server) postClientRPC(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Marshal and send.
-	mresp, err := navjson.MarshalResponse(req.ID, res, jsonErr)
+	mresp, err := btcjson.MarshalResponse(req.ID, res, jsonErr)
 	if err != nil {
 		log.Errorf("Unable to marshal response: %v", err)
 		http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)

@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/aguycalled/navd/navec"
+	"github.com/aguycalled/navd/btcec"
 	"github.com/aguycalled/navd/txscript"
 	"github.com/aguycalled/navd/wire"
 	"github.com/aguycalled/navutil"
@@ -62,7 +62,7 @@ type secretSource struct {
 	addrmgrNs walletdb.ReadBucket
 }
 
-func (s secretSource) GetKey(addr navutil.Address) (*navec.PrivateKey, bool, error) {
+func (s secretSource) GetKey(addr navutil.Address) (*btcec.PrivateKey, bool, error) {
 	ma, err := s.Address(s.addrmgrNs, addr)
 	if err != nil {
 		return nil, false, err

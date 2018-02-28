@@ -6,7 +6,7 @@
 
 package rpchelp
 
-import "github.com/aguycalled/navd/navjson"
+import "github.com/aguycalled/navd/btcjson"
 
 // Common return types.
 var (
@@ -14,7 +14,7 @@ var (
 	returnsNumber      = []interface{}{(*float64)(nil)}
 	returnsString      = []interface{}{(*string)(nil)}
 	returnsStringArray = []interface{}{(*[]string)(nil)}
-	returnsLTRArray    = []interface{}{(*[]navjson.ListTransactionsResult)(nil)}
+	returnsLTRArray    = []interface{}{(*[]btcjson.ListTransactionsResult)(nil)}
 )
 
 // Methods contains all methods and result types that help is generated for,
@@ -24,7 +24,7 @@ var Methods = []struct {
 	ResultTypes []interface{}
 }{
 	{"addmultisigaddress", returnsString},
-	{"createmultisig", []interface{}{(*navjson.CreateMultiSigResult)(nil)}},
+	{"createmultisig", []interface{}{(*btcjson.CreateMultiSigResult)(nil)}},
 	{"dumpprivkey", returnsString},
 	{"getaccount", returnsString},
 	{"getaccountaddress", returnsString},
@@ -32,37 +32,37 @@ var Methods = []struct {
 	{"getbalance", append(returnsNumber, returnsNumber[0])},
 	{"getbestblockhash", returnsString},
 	{"getblockcount", returnsNumber},
-	{"getinfo", []interface{}{(*navjson.InfoWalletResult)(nil)}},
+	{"getinfo", []interface{}{(*btcjson.InfoWalletResult)(nil)}},
 	{"getnewaddress", returnsString},
 	{"getrawchangeaddress", returnsString},
 	{"getreceivedbyaccount", returnsNumber},
 	{"getreceivedbyaddress", returnsNumber},
-	{"gettransaction", []interface{}{(*navjson.GetTransactionResult)(nil)}},
+	{"gettransaction", []interface{}{(*btcjson.GetTransactionResult)(nil)}},
 	{"help", append(returnsString, returnsString[0])},
 	{"importprivkey", nil},
 	{"keypoolrefill", nil},
 	{"listaccounts", []interface{}{(*map[string]float64)(nil)}},
-	{"listlockunspent", []interface{}{(*[]navjson.TransactionInput)(nil)}},
-	{"listreceivedbyaccount", []interface{}{(*[]navjson.ListReceivedByAccountResult)(nil)}},
-	{"listreceivedbyaddress", []interface{}{(*[]navjson.ListReceivedByAddressResult)(nil)}},
-	{"listsinceblock", []interface{}{(*navjson.ListSinceBlockResult)(nil)}},
+	{"listlockunspent", []interface{}{(*[]btcjson.TransactionInput)(nil)}},
+	{"listreceivedbyaccount", []interface{}{(*[]btcjson.ListReceivedByAccountResult)(nil)}},
+	{"listreceivedbyaddress", []interface{}{(*[]btcjson.ListReceivedByAddressResult)(nil)}},
+	{"listsinceblock", []interface{}{(*btcjson.ListSinceBlockResult)(nil)}},
 	{"listtransactions", returnsLTRArray},
-	{"listunspent", []interface{}{(*navjson.ListUnspentResult)(nil)}},
+	{"listunspent", []interface{}{(*btcjson.ListUnspentResult)(nil)}},
 	{"lockunspent", returnsBool},
 	{"sendfrom", returnsString},
 	{"sendmany", returnsString},
 	{"sendtoaddress", returnsString},
 	{"settxfee", returnsBool},
 	{"signmessage", returnsString},
-	{"signrawtransaction", []interface{}{(*navjson.SignRawTransactionResult)(nil)}},
-	{"validateaddress", []interface{}{(*navjson.ValidateAddressWalletResult)(nil)}},
+	{"signrawtransaction", []interface{}{(*btcjson.SignRawTransactionResult)(nil)}},
+	{"validateaddress", []interface{}{(*btcjson.ValidateAddressWalletResult)(nil)}},
 	{"verifymessage", returnsBool},
 	{"walletlock", nil},
 	{"walletpassphrase", nil},
 	{"walletpassphrasechange", nil},
 	{"createnewaccount", nil},
 	{"exportwatchingwallet", returnsString},
-	{"getbestblock", []interface{}{(*navjson.GetBestBlockResult)(nil)}},
+	{"getbestblock", []interface{}{(*btcjson.GetBestBlockResult)(nil)}},
 	{"getunconfirmedbalance", returnsNumber},
 	{"listaddresstransactions", returnsLTRArray},
 	{"listalltransactions", returnsLTRArray},

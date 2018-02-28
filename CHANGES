@@ -103,11 +103,11 @@ Changes in 0.6.0 (Wed May 27 2015)
       a bucket (included in #234)
     - Factor out much of main's wallet.go into a wallet package (#213,
       #276, #255)
-    - Convert RPC server and client to navjson v2 API (#233, #227)
+    - Convert RPC server and client to btcjson v2 API (#233, #227)
       - Help text and single line usages for the help RPC are pregenerated
         from descriptions in the internal/rpchelp package and saved as
         globals in main.  Help text must be regenerated (using `go generate`)
-        each time the navjson struct tags change or the help definitions are
+        each time the btcjson struct tags change or the help definitions are
         modified.
     - Add additional features to the votingpool package:
       - Implement StartWithdrawal API to begin an Open Transactions
@@ -270,7 +270,7 @@ Changes in 0.5.0 (Tue Mar 03 2015)
     - Check and handle all errors in some way, or explicitly comment why a
       particular error was left unchecked
     - Simplify RPC error handling by wrapping specific errors in unique types to
-      create an appropriate navjson error before the response is marshalled
+      create an appropriate btcjson error before the response is marshalled
     - Add a map of unspent outputs (keyed by outpoint) to the transaction store
       for quick lookup of any UTXO and access to the full wallet UTXO set
       without iterating over many transactions looking for unspent credits

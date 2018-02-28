@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/aguycalled/navd/navjson"
+	"github.com/aguycalled/navd/btcjson"
 	"github.com/aguycalled/navd/chaincfg"
 	"github.com/aguycalled/navd/chaincfg/chainhash"
 	"github.com/aguycalled/navd/rpcclient"
@@ -166,7 +166,7 @@ func (c *RPCClient) BlockStamp() (*waddrmgr.BlockStamp, error) {
 // parseBlock parses a btcws definition of the block a tx is mined it to the
 // Block structure of the wtxmgr package, and the block index.  This is done
 // here since rpcclient doesn't parse this nicely for us.
-func parseBlock(block *navjson.BlockDetails) (*wtxmgr.BlockMeta, error) {
+func parseBlock(block *btcjson.BlockDetails) (*wtxmgr.BlockMeta, error) {
 	if block == nil {
 		return nil, nil
 	}
@@ -217,7 +217,7 @@ func (c *RPCClient) onBlockDisconnected(hash *chainhash.Hash, height int32, time
 	}
 }
 
-func (c *RPCClient) onRecvTx(tx *navutil.Tx, block *navjson.BlockDetails) {
+func (c *RPCClient) onRecvTx(tx *navutil.Tx, block *btcjson.BlockDetails) {
 	blk, err := parseBlock(block)
 	if err != nil {
 		// Log and drop improper notification.
@@ -237,7 +237,7 @@ func (c *RPCClient) onRecvTx(tx *navutil.Tx, block *navjson.BlockDetails) {
 	}
 }
 
-func (c *RPCClient) onRedeemingTx(tx *navutil.Tx, block *navjson.BlockDetails) {
+func (c *RPCClient) onRedeemingTx(tx *navutil.Tx, block *btcjson.BlockDetails) {
 	// Handled exactly like recvtx notifications.
 	c.onRecvTx(tx, block)
 }

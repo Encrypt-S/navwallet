@@ -11,7 +11,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/aguycalled/navd/navec"
+	"github.com/aguycalled/navd/btcec"
 	"github.com/aguycalled/navd/chaincfg"
 	"github.com/aguycalled/navutil"
 	"github.com/aguycalled/navutil/hdkeychain"
@@ -640,13 +640,13 @@ func (m *Manager) importedAddressRowToManaged(row *dbImportedAddressRow) (Manage
 		return nil, managerError(ErrCrypto, str, err)
 	}
 
-	pubKey, err := navec.ParsePubKey(pubBytes, navec.S256())
+	pubKey, err := btcec.ParsePubKey(pubBytes, btcec.S256())
 	if err != nil {
 		str := "invalid public key for imported address"
 		return nil, managerError(ErrCrypto, str, err)
 	}
 
-	compressed := len(pubBytes) == navec.PubKeyBytesLenCompressed
+	compressed := len(pubBytes) == btcec.PubKeyBytesLenCompressed
 	ma, err := newManagedAddressWithoutPrivKey(m, row.account, pubKey,
 		compressed, row.addrType)
 	if err != nil {
@@ -1116,7 +1116,7 @@ func (m *Manager) ImportPrivateKey(ns walletdb.ReadWriteBucket, wif *navutil.WIF
 		managedAddr, err = newManagedAddress(m, ImportedAddrAccount,
 			wif.PrivKey, wif.CompressPubKey, adtChain)
 	} else {
-		pubKey := (*navec.PublicKey)(&wif.PrivKey.PublicKey)
+		pubKey := (*btcec.PublicKey)(&wif.PrivKey.PublicKey)
 		managedAddr, err = newManagedAddressWithoutPrivKey(m,
 			ImportedAddrAccount, pubKey, wif.CompressPubKey,
 			adtChain)

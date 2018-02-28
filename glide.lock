@@ -51,8 +51,8 @@ imports:
   subpackages:
   - addrmgr
   - blockchain
-  - navec
-  - navjson
+  - btcec
+  - btcjson
   - chaincfg
   - chaincfg/chainhash
   - connmgr

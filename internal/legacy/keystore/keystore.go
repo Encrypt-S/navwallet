@@ -22,7 +22,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/aguycalled/navd/navec"
+	"github.com/aguycalled/navd/btcec"
 	"github.com/aguycalled/navd/chaincfg"
 	"github.com/aguycalled/navd/chaincfg/chainhash"
 	"github.com/aguycalled/navd/txscript"
@@ -101,7 +101,7 @@ func binaryWrite(w io.Writer, order binary.ByteOrder, data interface{}) (n int64
 // 32-byte privkey.  The returned pubkey is 33 bytes if compressed,
 // or 65 bytes if uncompressed.
 func pubkeyFromPrivkey(privkey []byte, compress bool) (pubkey []byte) {
-	_, pk := navec.PrivKeyFromBytes(navec.S256(), privkey)
+	_, pk := btcec.PrivKeyFromBytes(btcec.S256(), privkey)
 
 	if compress {
 		return pk.SerializeCompressed()
@@ -183,7 +183,7 @@ func chainedPrivKey(privkey, pubkey, chaincode []byte) ([]byte, error) {
 			len(chaincode))
 	}
 	switch n := len(pubkey); n {
-	case navec.PubKeyBytesLenUncompressed, navec.PubKeyBytesLenCompressed:
+	case btcec.PubKeyBytesLenUncompressed, btcec.PubKeyBytesLenCompressed:
 		// Correct length
 	default:
 		return nil, fmt.Errorf("invalid pubkey length %d", n)
@@ -198,7 +198,7 @@ func chainedPrivKey(privkey, pubkey, chaincode []byte) ([]byte, error) {
 	privint := new(big.Int).SetBytes(privkey)
 
 	t := new(big.Int).Mul(chainXor, privint)
-	b := t.Mod(t, navec.S256().N).Bytes()
+	b := t.Mod(t, btcec.S256().N).Bytes()
 	return pad(32, b), nil
 }
 
@@ -208,9 +208,9 @@ func chainedPrivKey(privkey, pubkey, chaincode []byte) ([]byte, error) {
 func chainedPubKey(pubkey, chaincode []byte) ([]byte, error) {
 	var compressed bool
 	switch n := len(pubkey); n {
-	case navec.PubKeyBytesLenUncompressed:
+	case btcec.PubKeyBytesLenUncompressed:
 		compressed = false
-	case navec.PubKeyBytesLenCompressed:
+	case btcec.PubKeyBytesLenCompressed:
 		compressed = true
 	default:
 		// Incorrect serialized pubkey length
@@ -227,16 +227,16 @@ func chainedPubKey(pubkey, chaincode []byte) ([]byte, error) {
 		xorbytes[i] = chainMod[i] ^ chaincode[i]
 	}
 
-	oldPk, err := navec.ParsePubKey(pubkey, navec.S256())
+	oldPk, err := btcec.ParsePubKey(pubkey, btcec.S256())
 	if err != nil {
 		return nil, err
 	}
-	newX, newY := navec.S256().ScalarMult(oldPk.X, oldPk.Y, xorbytes)
+	newX, newY := btcec.S256().ScalarMult(oldPk.X, oldPk.Y, xorbytes)
 	if err != nil {
 		return nil, err
 	}
-	newPk := &navec.PublicKey{
-		Curve: navec.S256(),
+	newPk := &btcec.PublicKey{
+		Curve: btcec.S256(),
 		X:     newX,
 		Y:     newY,
 	}
@@ -2048,7 +2048,7 @@ type btcAddress struct {
 	chainDepth        int64 // unused
 	initVector        [16]byte
 	privKey           [32]byte
-	pubKey            *navec.PublicKey
+	pubKey            *btcec.PublicKey
 	firstSeen         int64
 	lastSeen          int64
 	firstBlock        int32
@@ -2119,14 +2119,14 @@ func (k *publicKey) WriteTo(w io.Writer) (n int64, err error) {
 type PubKeyAddress interface {
 	WalletAddress
 	// PubKey returns the public key associated with the address.
-	PubKey() *navec.PublicKey
+	PubKey() *btcec.PublicKey
 	// ExportPubKey returns the public key associated with the address
 	// serialised as a hex encoded string.
 	ExportPubKey() string
 	// PrivKey returns the private key for the address.
 	// It can fail if the key store is watching only, the key store is locked,
 	// or the address doesn't have any keys.
-	PrivKey() (*navec.PrivateKey, error)
+	PrivKey() (*btcec.PrivateKey, error)
 	// ExportPrivKey exports the WIF private key.
 	ExportPrivKey() (*navutil.WIF, error)
 }
@@ -2159,9 +2159,9 @@ func newBtcAddress(wallet *Store, privkey, iv []byte, bs *BlockStamp, compressed
 func newBtcAddressWithoutPrivkey(s *Store, pubkey, iv []byte, bs *BlockStamp) (addr *btcAddress, err error) {
 	var compressed bool
 	switch n := len(pubkey); n {
-	case navec.PubKeyBytesLenCompressed:
+	case btcec.PubKeyBytesLenCompressed:
 		compressed = true
-	case navec.PubKeyBytesLenUncompressed:
+	case btcec.PubKeyBytesLenUncompressed:
 		compressed = false
 	default:
 		return nil, fmt.Errorf("invalid pubkey length %d", n)
@@ -2175,7 +2175,7 @@ func newBtcAddressWithoutPrivkey(s *Store, pubkey, iv []byte, bs *BlockStamp) (a
 		return nil, errors.New("init vector must be nil or 16 bytes large")
 	}
 
-	pk, err := navec.ParsePubKey(pubkey, navec.S256())
+	pk, err := btcec.ParsePubKey(pubkey, btcec.S256())
 	if err != nil {
 		return nil, err
 	}
@@ -2239,7 +2239,7 @@ func (a *btcAddress) verifyKeypairs() error {
 		return errors.New("private key unavailable")
 	}
 
-	privKey := &navec.PrivateKey{
+	privKey := &btcec.PrivateKey{
 		PublicKey: *a.pubKey.ToECDSA(),
 		D:         new(big.Int).SetBytes(a.privKeyCT),
 	}
@@ -2323,7 +2323,7 @@ func (a *btcAddress) ReadFrom(r io.Reader) (n int64, err error) {
 	if !a.flags.hasPubKey {
 		return n, errors.New("read in an address without a public key")
 	}
-	pk, err := navec.ParsePubKey(pubKey, navec.S256())
+	pk, err := btcec.ParsePubKey(pubKey, btcec.S256())
 	if err != nil {
 		return n, err
 	}
@@ -2443,7 +2443,7 @@ func (a *btcAddress) unlock(key []byte) (privKeyCT []byte, err error) {
 		return privKeyCT, nil
 	}
 
-	x, y := navec.S256().ScalarBaseMult(privkey)
+	x, y := btcec.S256().ScalarBaseMult(privkey)
 	if x.Cmp(a.pubKey.X) != 0 || y.Cmp(a.pubKey.Y) != 0 {
 		return nil, ErrWrongPassphrase
 	}
@@ -2536,7 +2536,7 @@ func (a *btcAddress) SyncStatus() SyncStatus {
 
 // PubKey returns the hex encoded pubkey for the address. Implementing
 // PubKeyAddress.
-func (a *btcAddress) PubKey() *navec.PublicKey {
+func (a *btcAddress) PubKey() *btcec.PublicKey {
 	return a.pubKey
 }
 
@@ -2555,7 +2555,7 @@ func (a *btcAddress) ExportPubKey() string {
 
 // PrivKey implements PubKeyAddress by returning the private key, or an error
 // if the key store is locked, watching only or the private key is missing.
-func (a *btcAddress) PrivKey() (*navec.PrivateKey, error) {
+func (a *btcAddress) PrivKey() (*btcec.PrivateKey, error) {
 	if a.store.flags.watchingOnly {
 		return nil, ErrWatchingOnly
 	}
@@ -2577,7 +2577,7 @@ func (a *btcAddress) PrivKey() (*navec.PrivateKey, error) {
 		return nil, err
 	}
 
-	return &navec.PrivateKey{
+	return &btcec.PrivateKey{
 		PublicKey: *a.pubKey.ToECDSA(),
 		D:         new(big.Int).SetBytes(privKeyCT),
 	}, nil
@@ -2594,7 +2594,7 @@ func (a *btcAddress) ExportPrivKey() (*navutil.WIF, error) {
 	// as our program's assumptions are so broken that this needs to be
 	// caught immediately, and a stack trace here is more useful than
 	// elsewhere.
-	wif, err := navutil.NewWIF((*navec.PrivateKey)(pk), a.store.netParams(),
+	wif, err := navutil.NewWIF((*btcec.PrivateKey)(pk), a.store.netParams(),
 		a.Compressed())
 	if err != nil {
 		panic(err)

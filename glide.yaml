@@ -6,8 +6,8 @@ import:
   version: 9978b939c33973be19b932fa7b936079bb7ba38d
   subpackages:
   - blockchain
-  - navec
-  - navjson
+  - btcec
+  - btcjson
   - chaincfg
   - chaincfg/chainhash
   - txscript

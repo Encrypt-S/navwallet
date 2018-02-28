@@ -16,8 +16,8 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/aguycalled/navd/blockchain"
-	"github.com/aguycalled/navd/navec"
-	"github.com/aguycalled/navd/navjson"
+	"github.com/aguycalled/navd/btcec"
+	"github.com/aguycalled/navd/btcjson"
 	"github.com/aguycalled/navd/chaincfg"
 	"github.com/aguycalled/navd/chaincfg/chainhash"
 	"github.com/aguycalled/navd/rpcclient"
@@ -888,8 +888,8 @@ func (w *Wallet) CurrentAddress(account uint32) (navutil.Address, error) {
 }
 
 // PubKeyForAddress looks up the associated public key for a P2PKH address.
-func (w *Wallet) PubKeyForAddress(a navutil.Address) (*navec.PublicKey, error) {
-	var pubKey *navec.PublicKey
+func (w *Wallet) PubKeyForAddress(a navutil.Address) (*btcec.PublicKey, error) {
+	var pubKey *btcec.PublicKey
 	err := walletdb.View(w.db, func(tx walletdb.ReadTx) error {
 		addrmgrNs := tx.ReadBucket(waddrmgrNamespaceKey)
 		managedAddr, err := w.Manager.Address(addrmgrNs, a)
@@ -908,8 +908,8 @@ func (w *Wallet) PubKeyForAddress(a navutil.Address) (*navec.PublicKey, error) {
 
 // PrivKeyForAddress looks up the associated private key for a P2PKH or P2PK
 // address.
-func (w *Wallet) PrivKeyForAddress(a navutil.Address) (*navec.PrivateKey, error) {
-	var privKey *navec.PrivateKey
+func (w *Wallet) PrivKeyForAddress(a navutil.Address) (*btcec.PrivateKey, error) {
+	var privKey *btcec.PrivateKey
 	err := walletdb.View(w.db, func(tx walletdb.ReadTx) error {
 		addrmgrNs := tx.ReadBucket(waddrmgrNamespaceKey)
 		managedAddr, err := w.Manager.Address(addrmgrNs, a)
@@ -1104,7 +1104,7 @@ func RecvCategory(details *wtxmgr.TxDetails, syncHeight int32, net *chaincfg.Par
 //
 // TODO: This should be moved to the legacyrpc package.
 func listTransactions(tx walletdb.ReadTx, details *wtxmgr.TxDetails, addrMgr *waddrmgr.Manager,
-	syncHeight int32, net *chaincfg.Params) []navjson.ListTransactionsResult {
+	syncHeight int32, net *chaincfg.Params) []btcjson.ListTransactionsResult {
 
 	addrmgrNs := tx.ReadBucket(waddrmgrNamespaceKey)
 
@@ -1119,7 +1119,7 @@ func listTransactions(tx walletdb.ReadTx, details *wtxmgr.TxDetails, addrMgr *wa
 		confirmations = int64(confirms(details.Block.Height, syncHeight))
 	}
 
-	results := []navjson.ListTransactionsResult{}
+	results := []btcjson.ListTransactionsResult{}
 	txHashStr := details.Hash.String()
 	received := details.Received.Unix()
 	generated := blockchain.IsCoinBaseTx(&details.MsgTx)
@@ -1179,7 +1179,7 @@ outputs:
 		}
 
 		amountF64 := navutil.Amount(output.Value).ToBTC()
-		result := navjson.ListTransactionsResult{
+		result := btcjson.ListTransactionsResult{
 			// Fields left zeroed:
 			//   InvolvesWatchOnly
 			//   BlockIndex
@@ -1231,8 +1231,8 @@ outputs:
 // ListSinceBlock returns a slice of objects with details about transactions
 // since the given block. If the block is -1 then all transactions are included.
 // This is intended to be used for listsinceblock RPC replies.
-func (w *Wallet) ListSinceBlock(start, end, syncHeight int32) ([]navjson.ListTransactionsResult, error) {
-	txList := []navjson.ListTransactionsResult{}
+func (w *Wallet) ListSinceBlock(start, end, syncHeight int32) ([]btcjson.ListTransactionsResult, error) {
+	txList := []btcjson.ListTransactionsResult{}
 	err := walletdb.View(w.db, func(tx walletdb.ReadTx) error {
 		txmgrNs := tx.ReadBucket(wtxmgrNamespaceKey)
 
@@ -1253,8 +1253,8 @@ func (w *Wallet) ListSinceBlock(start, end, syncHeight int32) ([]navjson.ListTra
 // ListTransactions returns a slice of objects with details about a recorded
 // transaction.  This is intended to be used for listtransactions RPC
 // replies.
-func (w *Wallet) ListTransactions(from, count int) ([]navjson.ListTransactionsResult, error) {
-	txList := []navjson.ListTransactionsResult{}
+func (w *Wallet) ListTransactions(from, count int) ([]btcjson.ListTransactionsResult, error) {
+	txList := []btcjson.ListTransactionsResult{}
 
 	err := walletdb.View(w.db, func(tx walletdb.ReadTx) error {
 		txmgrNs := tx.ReadBucket(wtxmgrNamespaceKey)
@@ -1306,8 +1306,8 @@ func (w *Wallet) ListTransactions(from, count int) ([]navjson.ListTransactionsRe
 // ListAddressTransactions returns a slice of objects with details about
 // recorded transactions to or from any address belonging to a set.  This is
 // intended to be used for listaddresstransactions RPC replies.
-func (w *Wallet) ListAddressTransactions(pkHashes map[string]struct{}) ([]navjson.ListTransactionsResult, error) {
-	txList := []navjson.ListTransactionsResult{}
+func (w *Wallet) ListAddressTransactions(pkHashes map[string]struct{}) ([]btcjson.ListTransactionsResult, error) {
+	txList := []btcjson.ListTransactionsResult{}
 	err := walletdb.View(w.db, func(tx walletdb.ReadTx) error {
 		txmgrNs := tx.ReadBucket(wtxmgrNamespaceKey)
 
@@ -1355,8 +1355,8 @@ func (w *Wallet) ListAddressTransactions(pkHashes map[string]struct{}) ([]navjso
 // ListAllTransactions returns a slice of objects with details about a recorded
 // transaction.  This is intended to be used for listalltransactions RPC
 // replies.
-func (w *Wallet) ListAllTransactions() ([]navjson.ListTransactionsResult, error) {
-	txList := []navjson.ListTransactionsResult{}
+func (w *Wallet) ListAllTransactions() ([]btcjson.ListTransactionsResult, error) {
+	txList := []btcjson.ListTransactionsResult{}
 	err := walletdb.View(w.db, func(tx walletdb.ReadTx) error {
 		txmgrNs := tx.ReadBucket(wtxmgrNamespaceKey)
 
@@ -1724,8 +1724,8 @@ func (s creditSlice) Swap(i, j int) {
 // minconf, less than maxconf and if addresses is populated only the addresses
 // contained within it will be considered.  If we know nothing about a
 // transaction an empty array will be returned.
-func (w *Wallet) ListUnspent(minconf, maxconf int32, addresses map[string]struct{}) ([]*navjson.ListUnspentResult, error) {
-	var results []*navjson.ListUnspentResult
+func (w *Wallet) ListUnspent(minconf, maxconf int32, addresses map[string]struct{}) ([]*btcjson.ListUnspentResult, error) {
+	var results []*btcjson.ListUnspentResult
 	err := walletdb.View(w.db, func(tx walletdb.ReadTx) error {
 		addrmgrNs := tx.ReadBucket(waddrmgrNamespaceKey)
 		txmgrNs := tx.ReadBucket(wtxmgrNamespaceKey)
@@ -1745,7 +1745,7 @@ func (w *Wallet) ListUnspent(minconf, maxconf int32, addresses map[string]struct
 			return err
 		}
 
-		results = make([]*navjson.ListUnspentResult, 0, len(unspent))
+		results = make([]*btcjson.ListUnspentResult, 0, len(unspent))
 		for i := range unspent {
 			output := unspent[i]
 
@@ -1838,7 +1838,7 @@ func (w *Wallet) ListUnspent(minconf, maxconf int32, addresses map[string]struct
 				spendable = true
 			}
 
-			result := &navjson.ListUnspentResult{
+			result := &btcjson.ListUnspentResult{
 				TxID:          output.OutPoint.Hash.String(),
 				Vout:          output.OutPoint.Index,
 				Account:       acctName,
@@ -2025,11 +2025,11 @@ func (w *Wallet) ResetLockedOutpoints() {
 // LockedOutpoints returns a slice of currently locked outpoints.  This is
 // intended to be used by marshaling the result as a JSON array for
 // listlockunspent RPC results.
-func (w *Wallet) LockedOutpoints() []navjson.TransactionInput {
-	locked := make([]navjson.TransactionInput, len(w.lockedOutpoints))
+func (w *Wallet) LockedOutpoints() []btcjson.TransactionInput {
+	locked := make([]btcjson.TransactionInput, len(w.lockedOutpoints))
 	i := 0
 	for op := range w.lockedOutpoints {
-		locked[i] = navjson.TransactionInput{
+		locked[i] = btcjson.TransactionInput{
 			Txid: op.Hash.String(),
 			Vout: op.Index,
 		}
@@ -2441,7 +2441,7 @@ func (w *Wallet) SignTransaction(tx *wire.MsgTx, hashType txscript.SigHashType,
 
 			// Set up our callbacks that we pass to txscript so it can
 			// look up the appropriate keys and scripts by address.
-			getKey := txscript.KeyClosure(func(addr navutil.Address) (*navec.PrivateKey, bool, error) {
+			getKey := txscript.KeyClosure(func(addr navutil.Address) (*btcec.PrivateKey, bool, error) {
 				if len(additionalKeysByAddress) != 0 {
 					addrStr := addr.EncodeAddress()
 					wif, ok := additionalKeysByAddress[addrStr]

@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/aguycalled/navd/navec"
+	"github.com/aguycalled/navd/btcec"
 	"github.com/aguycalled/navd/txscript"
 	"github.com/aguycalled/navutil"
 	"github.com/aguycalled/navutil/hdkeychain"
@@ -87,7 +87,7 @@ type ManagedPubKeyAddress interface {
 	ManagedAddress
 
 	// PubKey returns the public key associated with the address.
-	PubKey() *navec.PublicKey
+	PubKey() *btcec.PublicKey
 
 	// ExportPubKey returns the public key associated with the address
 	// serialized as a hex encoded string.
@@ -96,7 +96,7 @@ type ManagedPubKeyAddress interface {
 	// PrivKey returns the private key for the address.  It can fail if the
 	// address manager is watching-only or locked, or the address does not
 	// have any keys.
-	PrivKey() (*navec.PrivateKey, error)
+	PrivKey() (*btcec.PrivateKey, error)
 
 	// ExportPrivKey returns the private key associated with the address
 	// serialized as Wallet Import Format (WIF).
@@ -131,7 +131,7 @@ type managedAddress struct {
 	compressed       bool
 	used             bool
 	addrType         addressType
-	pubKey           *navec.PublicKey
+	pubKey           *btcec.PublicKey
 	privKeyEncrypted []byte
 	privKeyCT        []byte // non-nil if unlocked
 	privKeyMutex     sync.Mutex
@@ -242,7 +242,7 @@ func (a *managedAddress) Used(ns walletdb.ReadBucket) bool {
 // PubKey returns the public key associated with the address.
 //
 // This is part of the ManagedPubKeyAddress interface implementation.
-func (a *managedAddress) PubKey() *navec.PublicKey {
+func (a *managedAddress) PubKey() *btcec.PublicKey {
 	return a.pubKey
 }
 
@@ -267,7 +267,7 @@ func (a *managedAddress) ExportPubKey() string {
 // manager is watching-only or locked, or the address does not have any keys.
 //
 // This is part of the ManagedPubKeyAddress interface implementation.
-func (a *managedAddress) PrivKey() (*navec.PrivateKey, error) {
+func (a *managedAddress) PrivKey() (*btcec.PrivateKey, error) {
 	// No private keys are available for a watching-only address manager.
 	if a.manager.watchingOnly {
 		return nil, managerError(ErrWatchingOnly, errWatchingOnly, nil)
@@ -289,7 +289,7 @@ func (a *managedAddress) PrivKey() (*navec.PrivateKey, error) {
 		return nil, err
 	}
 
-	privKey, _ := navec.PrivKeyFromBytes(navec.S256(), privKeyCopy)
+	privKey, _ := btcec.PrivKeyFromBytes(btcec.S256(), privKeyCopy)
 	zero.Bytes(privKeyCopy)
 	return privKey, nil
 }
@@ -321,7 +321,7 @@ func (a *managedAddress) IsWitness() bool {
 // newManagedAddressWithoutPrivKey returns a new managed address based on the
 // passed account, public key, and whether or not the public key should be
 // compressed.
-func newManagedAddressWithoutPrivKey(m *Manager, account uint32, pubKey *navec.PublicKey,
+func newManagedAddressWithoutPrivKey(m *Manager, account uint32, pubKey *btcec.PublicKey,
 	compressed bool, addrType addressType) (*managedAddress, error) {
 
 	// Create a pay-to-pubkey-hash address from the public key.
@@ -396,7 +396,7 @@ func newManagedAddressWithoutPrivKey(m *Manager, account uint32, pubKey *navec.P
 // newManagedAddress returns a new managed address based on the passed account,
 // private key, and whether or not the public key is compressed.  The managed
 // address will have access to the private and public keys.
-func newManagedAddress(m *Manager, account uint32, privKey *navec.PrivateKey,
+func newManagedAddress(m *Manager, account uint32, privKey *btcec.PrivateKey,
 	compressed bool, addrType addressType) (*managedAddress, error) {
 
 	// Encrypt the private key.
@@ -412,7 +412,7 @@ func newManagedAddress(m *Manager, account uint32, privKey *navec.PrivateKey,
 
 	// Leverage the code to create a managed address without a private key
 	// and then add the private key to it.
-	ecPubKey := (*navec.PublicKey)(&privKey.PublicKey)
+	ecPubKey := (*btcec.PublicKey)(&privKey.PublicKey)
 	managedAddr, err := newManagedAddressWithoutPrivKey(m, account,
 		ecPubKey, compressed, addrType)
 	if err != nil {
