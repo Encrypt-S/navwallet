@@ -8,12 +8,12 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/aguycalled/navd/txscript"
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navutil/hdkeychain"
-	"github.com/aguycalled/navwallet/internal/zero"
-	"github.com/aguycalled/navwallet/waddrmgr"
-	"github.com/aguycalled/navwallet/walletdb"
+	"github.com/navcoin/navd/txscript"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navutil/hdkeychain"
+	"github.com/navcoin/navwallet/internal/zero"
+	"github.com/navcoin/navwallet/waddrmgr"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 const (

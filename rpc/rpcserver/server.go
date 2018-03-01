@@ -8,11 +8,11 @@
 // Full documentation of the API implemented by this package is maintained in a
 // language-agnostic document:
 //
-//   https://github.com/aguycalled/navwallet/blob/master/rpc/documentation/api.md
+//   https://github.com/navcoin/navwallet/blob/master/rpc/documentation/api.md
 //
 // Any API changes must be performed according to the steps listed here:
 //
-//   https://github.com/aguycalled/navwallet/blob/master/rpc/documentation/serverchanges.md
+//   https://github.com/navcoin/navwallet/blob/master/rpc/documentation/serverchanges.md
 package rpcserver
 
 import (
@@ -25,20 +25,20 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 
-	"github.com/aguycalled/navd/chaincfg/chainhash"
-	"github.com/aguycalled/navd/rpcclient"
-	"github.com/aguycalled/navd/txscript"
-	"github.com/aguycalled/navd/wire"
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navutil/hdkeychain"
-	"github.com/aguycalled/navwallet/chain"
-	"github.com/aguycalled/navwallet/internal/cfgutil"
-	"github.com/aguycalled/navwallet/internal/zero"
-	"github.com/aguycalled/navwallet/netparams"
-	pb "github.com/aguycalled/navwallet/rpc/walletrpc"
-	"github.com/aguycalled/navwallet/waddrmgr"
-	"github.com/aguycalled/navwallet/wallet"
-	"github.com/aguycalled/navwallet/walletdb"
+	"github.com/navcoin/navd/chaincfg/chainhash"
+	"github.com/navcoin/navd/rpcclient"
+	"github.com/navcoin/navd/txscript"
+	"github.com/navcoin/navd/wire"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navutil/hdkeychain"
+	"github.com/navcoin/navwallet/chain"
+	"github.com/navcoin/navwallet/internal/cfgutil"
+	"github.com/navcoin/navwallet/internal/zero"
+	"github.com/navcoin/navwallet/netparams"
+	pb "github.com/navcoin/navwallet/rpc/walletrpc"
+	"github.com/navcoin/navwallet/waddrmgr"
+	"github.com/navcoin/navwallet/wallet"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 // Public API version constants

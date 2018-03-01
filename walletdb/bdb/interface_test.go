@@ -16,7 +16,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/aguycalled/navwallet/walletdb/walletdbtest"
+	"github.com/navcoin/navwallet/walletdb/walletdbtest"
 )
 
 // TestInterface performs all interfaces tests for this database driver.

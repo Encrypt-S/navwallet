@@ -4,7 +4,7 @@
 
 package wtxmgr
 
-import "github.com/aguycalled/navd/chaincfg/chainhash"
+import "github.com/navcoin/navd/chaincfg/chainhash"
 
 type graphNode struct {
 	value    *TxRecord

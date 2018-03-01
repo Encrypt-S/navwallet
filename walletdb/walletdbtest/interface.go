@@ -9,7 +9,7 @@ import (
 	"os"
 	"reflect"
 
-	"github.com/aguycalled/navwallet/walletdb"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 // errSubTestFail is used to signal that a sub test returned false.

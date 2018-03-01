@@ -7,11 +7,11 @@ package wallet
 import (
 	"bytes"
 
-	"github.com/aguycalled/navd/txscript"
-	"github.com/aguycalled/navwallet/chain"
-	"github.com/aguycalled/navwallet/waddrmgr"
-	"github.com/aguycalled/navwallet/walletdb"
-	"github.com/aguycalled/navwallet/wtxmgr"
+	"github.com/navcoin/navd/txscript"
+	"github.com/navcoin/navwallet/chain"
+	"github.com/navcoin/navwallet/waddrmgr"
+	"github.com/navcoin/navwallet/walletdb"
+	"github.com/navcoin/navwallet/wtxmgr"
 )
 
 func (w *Wallet) handleChainNotifications() {

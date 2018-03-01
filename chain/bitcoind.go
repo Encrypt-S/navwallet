@@ -10,15 +10,15 @@ import (
 	"time"
 
 	"github.com/lightninglabs/gozmq"
-	"github.com/aguycalled/navd/btcjson"
-	"github.com/aguycalled/navd/chaincfg"
-	"github.com/aguycalled/navd/chaincfg/chainhash"
-	"github.com/aguycalled/navd/rpcclient"
-	"github.com/aguycalled/navd/txscript"
-	"github.com/aguycalled/navd/wire"
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navwallet/waddrmgr"
-	"github.com/aguycalled/navwallet/wtxmgr"
+	"github.com/navcoin/navd/btcjson"
+	"github.com/navcoin/navd/chaincfg"
+	"github.com/navcoin/navd/chaincfg/chainhash"
+	"github.com/navcoin/navd/rpcclient"
+	"github.com/navcoin/navd/txscript"
+	"github.com/navcoin/navd/wire"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navwallet/waddrmgr"
+	"github.com/navcoin/navwallet/wtxmgr"
 )
 
 // BitcoindClient represents a persistent client connection to a bitcoind server

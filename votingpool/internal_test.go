@@ -5,10 +5,10 @@
 package votingpool
 
 import (
-	"github.com/aguycalled/navd/wire"
-	"github.com/aguycalled/navutil/hdkeychain"
-	"github.com/aguycalled/navwallet/waddrmgr"
-	"github.com/aguycalled/navwallet/walletdb"
+	"github.com/navcoin/navd/wire"
+	"github.com/navcoin/navutil/hdkeychain"
+	"github.com/navcoin/navwallet/waddrmgr"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 var TstLastErr = lastErr

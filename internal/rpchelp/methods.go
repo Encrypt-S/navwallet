@@ -6,7 +6,7 @@
 
 package rpchelp
 
-import "github.com/aguycalled/navd/btcjson"
+import "github.com/navcoin/navd/btcjson"
 
 // Common return types.
 var (

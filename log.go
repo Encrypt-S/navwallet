@@ -10,15 +10,15 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/aguycalled/navlog"
+	"github.com/navcoin/navlog"
 	"github.com/jrick/logrotate/rotator"
 	"github.com/lightninglabs/neutrino"
-	"github.com/aguycalled/navd/rpcclient"
-	"github.com/aguycalled/navwallet/chain"
-	"github.com/aguycalled/navwallet/rpc/legacyrpc"
-	"github.com/aguycalled/navwallet/rpc/rpcserver"
-	"github.com/aguycalled/navwallet/wallet"
-	"github.com/aguycalled/navwallet/wtxmgr"
+	"github.com/navcoin/navd/rpcclient"
+	"github.com/navcoin/navwallet/chain"
+	"github.com/navcoin/navwallet/rpc/legacyrpc"
+	"github.com/navcoin/navwallet/rpc/rpcserver"
+	"github.com/navcoin/navwallet/wallet"
+	"github.com/navcoin/navwallet/wtxmgr"
 )
 
 // logWriter implements an io.Writer that outputs to both standard output and

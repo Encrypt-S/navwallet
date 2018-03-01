@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	. "github.com/aguycalled/navwallet/internal/zero"
+	. "github.com/navcoin/navwallet/internal/zero"
 )
 
 func makeOneBytes(n int) []byte {

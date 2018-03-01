@@ -15,10 +15,10 @@ import (
 	"sync"
 
 	"github.com/lightninglabs/neutrino"
-	"github.com/aguycalled/navwallet/chain"
-	"github.com/aguycalled/navwallet/rpc/legacyrpc"
-	"github.com/aguycalled/navwallet/wallet"
-	"github.com/aguycalled/navwallet/walletdb"
+	"github.com/navcoin/navwallet/chain"
+	"github.com/navcoin/navwallet/rpc/legacyrpc"
+	"github.com/navcoin/navwallet/wallet"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 var (

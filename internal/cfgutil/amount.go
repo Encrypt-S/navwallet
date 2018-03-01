@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/aguycalled/navutil"
+	"github.com/navcoin/navutil"
 )
 
 // AmountFlag embeds a navutil.Amount and implements the flags.Marshaler and

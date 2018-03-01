@@ -19,9 +19,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/aguycalled/navd/btcjson"
-	"github.com/aguycalled/navwallet/chain"
-	"github.com/aguycalled/navwallet/wallet"
+	"github.com/navcoin/navd/btcjson"
+	"github.com/navcoin/navwallet/chain"
+	"github.com/navcoin/navwallet/wallet"
 	"github.com/btcsuite/websocket"
 )
 

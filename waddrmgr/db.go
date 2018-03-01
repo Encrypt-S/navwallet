@@ -12,10 +12,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/aguycalled/navd/chaincfg"
-	"github.com/aguycalled/navd/chaincfg/chainhash"
-	"github.com/aguycalled/navutil/hdkeychain"
-	"github.com/aguycalled/navwallet/walletdb"
+	"github.com/navcoin/navd/chaincfg"
+	"github.com/navcoin/navd/chaincfg/chainhash"
+	"github.com/navcoin/navutil/hdkeychain"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 const (

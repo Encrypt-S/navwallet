@@ -17,11 +17,11 @@ import (
 
 	flags "github.com/jessevdk/go-flags"
 	"github.com/lightninglabs/neutrino"
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navwallet/internal/cfgutil"
-	"github.com/aguycalled/navwallet/internal/legacy/keystore"
-	"github.com/aguycalled/navwallet/netparams"
-	"github.com/aguycalled/navwallet/wallet"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navwallet/internal/cfgutil"
+	"github.com/navcoin/navwallet/internal/legacy/keystore"
+	"github.com/navcoin/navwallet/netparams"
+	"github.com/navcoin/navwallet/wallet"
 )
 
 const (

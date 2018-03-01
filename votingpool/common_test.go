@@ -11,9 +11,9 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/aguycalled/navlog"
-	"github.com/aguycalled/navwallet/waddrmgr"
-	"github.com/aguycalled/navwallet/walletdb"
+	"github.com/navcoin/navlog"
+	"github.com/navcoin/navwallet/waddrmgr"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 func init() {

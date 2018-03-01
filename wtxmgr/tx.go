@@ -9,12 +9,12 @@ import (
 	"bytes"
 	"time"
 
-	"github.com/aguycalled/navd/blockchain"
-	"github.com/aguycalled/navd/chaincfg"
-	"github.com/aguycalled/navd/chaincfg/chainhash"
-	"github.com/aguycalled/navd/wire"
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navwallet/walletdb"
+	"github.com/navcoin/navd/blockchain"
+	"github.com/navcoin/navd/chaincfg"
+	"github.com/navcoin/navd/chaincfg/chainhash"
+	"github.com/navcoin/navd/wire"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 // Block contains the minimum amount of data to uniquely identify any block on

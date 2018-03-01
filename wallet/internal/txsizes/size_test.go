@@ -5,8 +5,8 @@ import (
 	"encoding/hex"
 	"testing"
 
-	"github.com/aguycalled/navd/wire"
-	. "github.com/aguycalled/navwallet/wallet/internal/txsizes"
+	"github.com/navcoin/navd/wire"
+	. "github.com/navcoin/navwallet/wallet/internal/txsizes"
 )
 
 const (

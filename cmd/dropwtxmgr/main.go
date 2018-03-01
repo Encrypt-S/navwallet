@@ -12,10 +12,10 @@ import (
 	"path/filepath"
 
 	"github.com/jessevdk/go-flags"
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navwallet/walletdb"
-	_ "github.com/aguycalled/navwallet/walletdb/bdb"
-	"github.com/aguycalled/navwallet/wtxmgr"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navwallet/walletdb"
+	_ "github.com/navcoin/navwallet/walletdb/bdb"
+	"github.com/navcoin/navwallet/wtxmgr"
 )
 
 const defaultNet = "mainnet"

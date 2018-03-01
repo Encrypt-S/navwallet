@@ -7,8 +7,8 @@
 package helpers
 
 import (
-	"github.com/aguycalled/navd/wire"
-	"github.com/aguycalled/navutil"
+	"github.com/navcoin/navd/wire"
+	"github.com/navcoin/navutil"
 )
 
 // SumOutputValues sums up the list of TxOuts and returns an Amount.

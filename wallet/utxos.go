@@ -6,9 +6,9 @@
 package wallet
 
 import (
-	"github.com/aguycalled/navd/txscript"
-	"github.com/aguycalled/navd/wire"
-	"github.com/aguycalled/navwallet/walletdb"
+	"github.com/navcoin/navd/txscript"
+	"github.com/navcoin/navd/wire"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 // OutputSelectionPolicy describes the rules for selecting an output from the

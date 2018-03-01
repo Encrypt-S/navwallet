@@ -10,11 +10,11 @@ import (
 	"encoding/gob"
 	"fmt"
 
-	"github.com/aguycalled/navd/txscript"
-	"github.com/aguycalled/navd/wire"
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navwallet/snacl"
-	"github.com/aguycalled/navwallet/walletdb"
+	"github.com/navcoin/navd/txscript"
+	"github.com/navcoin/navd/wire"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navwallet/snacl"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 // These constants define the serialized length for a given encrypted extended

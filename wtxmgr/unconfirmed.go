@@ -6,9 +6,9 @@
 package wtxmgr
 
 import (
-	"github.com/aguycalled/navd/chaincfg/chainhash"
-	"github.com/aguycalled/navd/wire"
-	"github.com/aguycalled/navwallet/walletdb"
+	"github.com/navcoin/navd/chaincfg/chainhash"
+	"github.com/navcoin/navd/wire"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 // insertMemPoolTx inserts the unmined transaction record.  It also marks

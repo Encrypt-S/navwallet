@@ -7,7 +7,7 @@ package bdb
 import (
 	"fmt"
 
-	"github.com/aguycalled/navwallet/walletdb"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 const (

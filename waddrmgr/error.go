@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/aguycalled/navutil/hdkeychain"
+	"github.com/navcoin/navutil/hdkeychain"
 )
 
 var (

@@ -6,9 +6,9 @@
 package wallet
 
 import (
-	"github.com/aguycalled/navd/chaincfg/chainhash"
-	"github.com/aguycalled/navwallet/walletdb"
-	"github.com/aguycalled/navwallet/wtxmgr"
+	"github.com/navcoin/navd/chaincfg/chainhash"
+	"github.com/navcoin/navwallet/walletdb"
+	"github.com/navcoin/navwallet/wtxmgr"
 )
 
 type unstableAPI struct {

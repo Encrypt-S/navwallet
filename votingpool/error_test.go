@@ -7,7 +7,7 @@ package votingpool_test
 import (
 	"testing"
 
-	vp "github.com/aguycalled/navwallet/votingpool"
+	vp "github.com/navcoin/navwallet/votingpool"
 )
 
 // TestErrorCodeStringer tests that all error codes has a text

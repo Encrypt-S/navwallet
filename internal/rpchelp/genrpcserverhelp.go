@@ -12,8 +12,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/aguycalled/navd/btcjson"
-	"github.com/aguycalled/navwallet/internal/rpchelp"
+	"github.com/navcoin/navd/btcjson"
+	"github.com/navcoin/navwallet/internal/rpchelp"
 )
 
 var outputFile = func() *os.File {

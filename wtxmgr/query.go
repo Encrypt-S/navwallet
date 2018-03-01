@@ -8,9 +8,9 @@ package wtxmgr
 import (
 	"fmt"
 
-	"github.com/aguycalled/navd/chaincfg/chainhash"
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navwallet/walletdb"
+	"github.com/navcoin/navd/chaincfg/chainhash"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 // CreditRecord contains metadata regarding a transaction credit for a known

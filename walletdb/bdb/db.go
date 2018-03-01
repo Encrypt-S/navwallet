@@ -9,7 +9,7 @@ import (
 	"os"
 
 	"github.com/boltdb/bolt"
-	"github.com/aguycalled/navwallet/walletdb"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 // convertErr converts some bolt errors to the equivalent walletdb error.

@@ -4,6 +4,6 @@
 
 package main
 
-import "github.com/aguycalled/navwallet/netparams"
+import "github.com/navcoin/navwallet/netparams"
 
 var activeNet = &netparams.MainNetParams

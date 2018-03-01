@@ -11,13 +11,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/aguycalled/navd/btcec"
-	"github.com/aguycalled/navd/chaincfg"
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navutil/hdkeychain"
-	"github.com/aguycalled/navwallet/internal/zero"
-	"github.com/aguycalled/navwallet/snacl"
-	"github.com/aguycalled/navwallet/walletdb"
+	"github.com/navcoin/navd/btcec"
+	"github.com/navcoin/navd/chaincfg"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navutil/hdkeychain"
+	"github.com/navcoin/navwallet/internal/zero"
+	"github.com/navcoin/navwallet/snacl"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 const (
@@ -522,7 +522,7 @@ func (m *Manager) loadAccountInfo(ns walletdb.ReadBucket, account uint32) (*acco
 	if err != nil {
 		return nil, err
 	}
-	// TODO(aguycalled): default type??
+	// TODO(navcoin): default type??
 	lastExtAddr, err := m.keyToManaged(lastExtKey, adtChainWitness,
 		account, branch, index)
 	if err != nil {
@@ -737,7 +737,7 @@ func (m *Manager) Address(ns walletdb.ReadBucket, address navutil.Address) (Mana
 		address = pka.AddressPubKeyHash()
 	}
 
-	// TODO(aguycalled): also need to distinguish p2wkh from p2pkh
+	// TODO(navcoin): also need to distinguish p2wkh from p2pkh
 
 	// Return the address from cache if it's available.
 	//
@@ -1111,7 +1111,7 @@ func (m *Manager) ImportPrivateKey(ns walletdb.ReadWriteBucket, wif *navutil.WIF
 
 	// Create a new managed address based on the imported address.
 	var managedAddr *managedAddress
-	// TODO(aguycalled): default type? need to watch for all
+	// TODO(navcoin): default type? need to watch for all
 	if !m.watchingOnly {
 		managedAddr, err = newManagedAddress(m, ImportedAddrAccount,
 			wif.PrivKey, wif.CompressPubKey, adtChain)
@@ -1383,7 +1383,7 @@ func (m *Manager) Unlock(ns walletdb.ReadBucket, passphrase []byte) error {
 			return managerError(ErrCrypto, str, err)
 		}
 
-		// TODO(aguycalled): don't need to do anythign further?
+		// TODO(navcoin): don't need to do anythign further?
 		switch a := info.managedAddr.(type) {
 		case *managedAddress:
 			a.privKeyEncrypted = privKeyEncrypted
@@ -1540,7 +1540,7 @@ func (m *Manager) nextAddresses(ns walletdb.ReadWriteBucket, account uint32, num
 			if err != nil {
 				return nil, maybeConvertDbError(err)
 			}
-		case *scriptAddress: // TODO(aguycalled): no longer needed?
+		case *scriptAddress: // TODO(navcoin): no longer needed?
 			encryptedHash, err := m.cryptoKeyPub.Encrypt(a.AddrHash())
 			if err != nil {
 				str := fmt.Sprintf("failed to encrypt script hash %x",

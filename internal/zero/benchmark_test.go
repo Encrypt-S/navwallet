@@ -7,7 +7,7 @@ package zero_test
 import (
 	"testing"
 
-	. "github.com/aguycalled/navwallet/internal/zero"
+	. "github.com/navcoin/navwallet/internal/zero"
 )
 
 var (

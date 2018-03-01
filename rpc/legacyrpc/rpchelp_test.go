@@ -18,8 +18,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/aguycalled/navd/btcjson"
-	"github.com/aguycalled/navwallet/internal/rpchelp"
+	"github.com/navcoin/navd/btcjson"
+	"github.com/navcoin/navwallet/internal/rpchelp"
 )
 
 func serverMethods() map[string]struct{} {

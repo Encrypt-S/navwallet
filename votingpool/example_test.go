@@ -23,14 +23,14 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/aguycalled/navd/chaincfg"
-	"github.com/aguycalled/navd/txscript"
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navwallet/votingpool"
-	"github.com/aguycalled/navwallet/waddrmgr"
-	"github.com/aguycalled/navwallet/walletdb"
-	_ "github.com/aguycalled/navwallet/walletdb/bdb"
-	"github.com/aguycalled/navwallet/wtxmgr"
+	"github.com/navcoin/navd/chaincfg"
+	"github.com/navcoin/navd/txscript"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navwallet/votingpool"
+	"github.com/navcoin/navwallet/waddrmgr"
+	"github.com/navcoin/navwallet/walletdb"
+	_ "github.com/navcoin/navwallet/walletdb/bdb"
+	"github.com/navcoin/navwallet/wtxmgr"
 )
 
 var (

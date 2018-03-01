@@ -8,14 +8,14 @@ package txauthor
 import (
 	"errors"
 
-	"github.com/aguycalled/navd/chaincfg"
-	"github.com/aguycalled/navd/txscript"
-	"github.com/aguycalled/navd/wire"
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navwallet/wallet/txrules"
+	"github.com/navcoin/navd/chaincfg"
+	"github.com/navcoin/navd/txscript"
+	"github.com/navcoin/navd/wire"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navwallet/wallet/txrules"
 
-	h "github.com/aguycalled/navwallet/internal/helpers"
-	"github.com/aguycalled/navwallet/wallet/internal/txsizes"
+	h "github.com/navcoin/navwallet/internal/helpers"
+	"github.com/navcoin/navwallet/wallet/internal/txsizes"
 )
 
 // InputSource provides transaction inputs referencing spendable outputs to

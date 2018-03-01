@@ -7,12 +7,12 @@ import (
 	"time"
 
 	"github.com/lightninglabs/neutrino"
-	"github.com/aguycalled/navd/chaincfg/chainhash"
-	"github.com/aguycalled/navd/rpcclient"
-	"github.com/aguycalled/navd/wire"
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navwallet/waddrmgr"
-	"github.com/aguycalled/navwallet/wtxmgr"
+	"github.com/navcoin/navd/chaincfg/chainhash"
+	"github.com/navcoin/navd/rpcclient"
+	"github.com/navcoin/navd/wire"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navwallet/waddrmgr"
+	"github.com/navcoin/navwallet/wtxmgr"
 )
 
 // NeutrinoClient is an implementation of the btcwalet chain.Interface interface.
@@ -92,7 +92,7 @@ func (s *NeutrinoClient) WaitForShutdown() {
 
 // GetBlock replicates the RPC client's GetBlock command.
 func (s *NeutrinoClient) GetBlock(hash *chainhash.Hash) (*wire.MsgBlock, error) {
-	// TODO(aguycalled): add a block cache?
+	// TODO(navcoin): add a block cache?
 	//  * which evication strategy? depends on use case
 	//  Should the block cache be INSIDE neutrino instead of in navwallet?
 	block, err := s.CS.GetBlockFromNetwork(*hash)

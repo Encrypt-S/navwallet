@@ -13,16 +13,16 @@ import (
 	"golang.org/x/crypto/ssh/terminal"
 
 	"github.com/jessevdk/go-flags"
-	"github.com/aguycalled/navd/btcjson"
-	"github.com/aguycalled/navd/chaincfg/chainhash"
-	"github.com/aguycalled/navd/rpcclient"
-	"github.com/aguycalled/navd/txscript"
-	"github.com/aguycalled/navd/wire"
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navwallet/internal/cfgutil"
-	"github.com/aguycalled/navwallet/netparams"
-	"github.com/aguycalled/navwallet/wallet/txauthor"
-	"github.com/aguycalled/navwallet/wallet/txrules"
+	"github.com/navcoin/navd/btcjson"
+	"github.com/navcoin/navd/chaincfg/chainhash"
+	"github.com/navcoin/navd/rpcclient"
+	"github.com/navcoin/navd/txscript"
+	"github.com/navcoin/navd/wire"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navwallet/internal/cfgutil"
+	"github.com/navcoin/navwallet/netparams"
+	"github.com/navcoin/navwallet/wallet/txauthor"
+	"github.com/navcoin/navwallet/wallet/txrules"
 )
 
 var (

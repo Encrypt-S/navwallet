@@ -9,14 +9,14 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/aguycalled/navd/btcec"
-	"github.com/aguycalled/navd/txscript"
-	"github.com/aguycalled/navd/wire"
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navwallet/waddrmgr"
-	"github.com/aguycalled/navwallet/wallet/txauthor"
-	"github.com/aguycalled/navwallet/walletdb"
-	"github.com/aguycalled/navwallet/wtxmgr"
+	"github.com/navcoin/navd/btcec"
+	"github.com/navcoin/navd/txscript"
+	"github.com/navcoin/navd/wire"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navwallet/waddrmgr"
+	"github.com/navcoin/navwallet/wallet/txauthor"
+	"github.com/navcoin/navwallet/walletdb"
+	"github.com/navcoin/navwallet/wtxmgr"
 )
 
 // byAmount defines the methods needed to satisify sort.Interface to

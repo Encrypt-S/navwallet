@@ -1,7 +1,7 @@
 navwallet
 =========
 
-[![Build Status](https://travis-ci.org/aguycalled/navwallet.png?branch=master)](https://travis-ci.org/aguycalled/navwallet)
+[![Build Status](https://travis-ci.org/navcoin/navwallet.png?branch=master)](https://travis-ci.org/navcoin/navwallet)
 [![Build status](https://ci.appveyor.com/api/projects/status/88nxvckdj8upqr36/branch/master?svg=true)](https://ci.appveyor.com/project/jrick/navwallet/branch/master)
 
 navwallet is a daemon handling bitcoin wallet functionality for a
@@ -30,7 +30,7 @@ encryption will extend to transactions as well.
 navwallet is not an SPV client and requires connecting to a local or
 remote navd instance for asynchronous blockchain queries and
 notifications over websockets.  Full navd installation instructions
-can be found [here](https://github.com/aguycalled/navd).  An alternative
+can be found [here](https://github.com/navcoin/navd).  An alternative
 SPV mode that is compatible with navd and Bitcoin Core is planned for
 a future release.
 
@@ -60,9 +60,9 @@ Wallet clients can use one of two RPC servers:
 
 Install the latest MSIs available here:
 
-https://github.com/aguycalled/navd/releases
+https://github.com/navcoin/navd/releases
 
-https://github.com/aguycalled/navwallet/releases
+https://github.com/navcoin/navwallet/releases
 
 ### Windows/Linux/BSD/POSIX - Build from source
 
@@ -96,8 +96,8 @@ For a first time installation, the project and dependency sources can be
 obtained manually with `git` and `glide` (create directories as needed):
 
 ```
-git clone https://github.com/aguycalled/navwallet $GOPATH/src/github.com/aguycalled/navwallet
-cd $GOPATH/src/github.com/aguycalled/navwallet
+git clone https://github.com/navcoin/navwallet $GOPATH/src/github.com/navcoin/navwallet
+cd $GOPATH/src/github.com/navcoin/navwallet
 glide install
 ```
 
@@ -105,7 +105,7 @@ To update an existing source tree, pull the latest changes and install the
 matching dependencies:
 
 ```
-cd $GOPATH/src/github.com/aguycalled/navwallet
+cd $GOPATH/src/github.com/navcoin/navwallet
 git pull
 glide install
 ```
@@ -182,15 +182,15 @@ PS> $editor $env:LOCALAPPDATA\Btcwallet\navwallet.conf
 
 Linux/BSD/POSIX (Installed from source):
 ```bash
-$ cp $GOPATH/src/github.com/aguycalled/navd/sample-navd.conf ~/.navd/navd.conf
-$ cp $GOPATH/src/github.com/aguycalled/navwallet/sample-navwallet.conf ~/.navwallet/navwallet.conf
+$ cp $GOPATH/src/github.com/navcoin/navd/sample-navd.conf ~/.navd/navd.conf
+$ cp $GOPATH/src/github.com/navcoin/navwallet/sample-navwallet.conf ~/.navwallet/navwallet.conf
 $ $EDITOR ~/.navd/navd.conf
 $ $EDITOR ~/.navwallet/navwallet.conf
 ```
 
 ## Issue Tracker
 
-The [integrated github issue tracker](https://github.com/aguycalled/navwallet/issues)
+The [integrated github issue tracker](https://github.com/navcoin/navwallet/issues)
 is used for this project.
 
 ## GPG Verification Key

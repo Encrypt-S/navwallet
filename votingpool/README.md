@@ -1,8 +1,8 @@
 votingpool
 ========
 
-[![Build Status](https://travis-ci.org/aguycalled/navwallet.png?branch=master)]
-(https://travis-ci.org/aguycalled/navwallet)
+[![Build Status](https://travis-ci.org/navcoin/navwallet.png?branch=master)]
+(https://travis-ci.org/navcoin/navwallet)
 
 Package votingpool provides voting pool functionality for navwallet as
 described here:
@@ -25,16 +25,16 @@ Note that this is still a work in progress.
 
 ## Documentation
 
-[![GoDoc](https://godoc.org/github.com/aguycalled/navwallet/votingpool?status.png)]
-(http://godoc.org/github.com/aguycalled/navwallet/votingpool)
+[![GoDoc](https://godoc.org/github.com/navcoin/navwallet/votingpool?status.png)]
+(http://godoc.org/github.com/navcoin/navwallet/votingpool)
 
 Full `go doc` style documentation for the project can be viewed online without
 installing this package by using the GoDoc site here:
-http://godoc.org/github.com/aguycalled/navwallet/votingpool
+http://godoc.org/github.com/navcoin/navwallet/votingpool
 
 You can also view the documentation locally once the package is installed with
 the `godoc` tool by running `godoc -http=":6060"` and pointing your browser to
-http://localhost:6060/pkg/github.com/aguycalled/navwallet/votingpool
+http://localhost:6060/pkg/github.com/navcoin/navwallet/votingpool
 
 Package votingpool is licensed under the [copyfree](http://copyfree.org) ISC
 License.

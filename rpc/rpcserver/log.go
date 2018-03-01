@@ -20,7 +20,7 @@ import (
 
 	"google.golang.org/grpc/grpclog"
 
-	"github.com/aguycalled/navlog"
+	"github.com/navcoin/navlog"
 )
 
 // UseLogger sets the logger to use for the gRPC server.

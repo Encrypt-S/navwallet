@@ -21,11 +21,11 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/aguycalled/navd/chaincfg"
-	"github.com/aguycalled/navd/txscript"
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navwallet/walletdb"
-	"github.com/aguycalled/navwallet/wtxmgr"
+	"github.com/navcoin/navd/chaincfg"
+	"github.com/navcoin/navd/txscript"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navwallet/walletdb"
+	"github.com/navcoin/navwallet/wtxmgr"
 )
 
 const eligibleInputMinConfirmations = 100

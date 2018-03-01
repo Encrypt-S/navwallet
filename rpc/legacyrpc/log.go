@@ -4,7 +4,7 @@
 
 package legacyrpc
 
-import "github.com/aguycalled/navlog"
+import "github.com/navcoin/navlog"
 
 var log = navlog.Disabled
 

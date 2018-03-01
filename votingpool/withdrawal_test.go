@@ -8,9 +8,9 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navutil/hdkeychain"
-	vp "github.com/aguycalled/navwallet/votingpool"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navutil/hdkeychain"
+	vp "github.com/navcoin/navwallet/votingpool"
 )
 
 func TestStartWithdrawal(t *testing.T) {

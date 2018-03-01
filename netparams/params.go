@@ -4,7 +4,7 @@
 
 package netparams
 
-import "github.com/aguycalled/navd/chaincfg"
+import "github.com/navcoin/navd/chaincfg"
 
 // Params is used to group parameters for various networks such as the main
 // network and test networks.

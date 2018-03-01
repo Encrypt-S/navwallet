@@ -9,12 +9,12 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/aguycalled/navd/btcec"
-	"github.com/aguycalled/navd/txscript"
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navutil/hdkeychain"
-	"github.com/aguycalled/navwallet/internal/zero"
-	"github.com/aguycalled/navwallet/walletdb"
+	"github.com/navcoin/navd/btcec"
+	"github.com/navcoin/navd/txscript"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navutil/hdkeychain"
+	"github.com/navcoin/navwallet/internal/zero"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 // AddressType represents the various address types waddrmgr is currently able
@@ -336,7 +336,7 @@ func newManagedAddressWithoutPrivKey(m *Manager, account uint32, pubKey *btcec.P
 	var err error
 
 	switch addrType {
-	// TODO(aguycalled): only use these types in the db?
+	// TODO(navcoin): only use these types in the db?
 	case adtChainNestedWitness:
 		// For this address type we'l generate an address which is
 		// backwards compatible to Bitcoin nodes running 0.6.0 onwards, but
@@ -365,7 +365,7 @@ func newManagedAddressWithoutPrivKey(m *Manager, account uint32, pubKey *btcec.P
 			return nil, err
 		}
 	case adtImport:
-		// TODO(aguycalled): truly proper?
+		// TODO(navcoin): truly proper?
 		fallthrough
 	case adtChain:
 		address, err = navutil.NewAddressPubKeyHash(pubKeyHash, m.chainParams)

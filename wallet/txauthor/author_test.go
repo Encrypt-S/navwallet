@@ -7,12 +7,12 @@ package txauthor_test
 import (
 	"testing"
 
-	"github.com/aguycalled/navd/wire"
-	"github.com/aguycalled/navutil"
-	. "github.com/aguycalled/navwallet/wallet/txauthor"
-	"github.com/aguycalled/navwallet/wallet/txrules"
+	"github.com/navcoin/navd/wire"
+	"github.com/navcoin/navutil"
+	. "github.com/navcoin/navwallet/wallet/txauthor"
+	"github.com/navcoin/navwallet/wallet/txrules"
 
-	"github.com/aguycalled/navwallet/wallet/internal/txsizes"
+	"github.com/navcoin/navwallet/wallet/internal/txsizes"
 )
 
 func p2pkhOutputs(amounts ...navutil.Amount) []*wire.TxOut {

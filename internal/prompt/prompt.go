@@ -12,8 +12,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/aguycalled/navutil/hdkeychain"
-	"github.com/aguycalled/navwallet/internal/legacy/keystore"
+	"github.com/navcoin/navutil/hdkeychain"
+	"github.com/navcoin/navwallet/internal/legacy/keystore"
 	"github.com/btcsuite/golangcrypto/ssh/terminal"
 )
 

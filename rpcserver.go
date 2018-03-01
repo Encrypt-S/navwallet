@@ -16,10 +16,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navwallet/rpc/legacyrpc"
-	"github.com/aguycalled/navwallet/rpc/rpcserver"
-	"github.com/aguycalled/navwallet/wallet"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navwallet/rpc/legacyrpc"
+	"github.com/navcoin/navwallet/rpc/rpcserver"
+	"github.com/navcoin/navwallet/wallet"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )

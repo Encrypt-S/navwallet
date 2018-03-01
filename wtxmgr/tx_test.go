@@ -13,14 +13,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/aguycalled/navd/chaincfg"
-	"github.com/aguycalled/navd/chaincfg/chainhash"
-	"github.com/aguycalled/navd/wire"
-	"github.com/aguycalled/navutil"
-	"github.com/aguycalled/navwallet/walletdb"
-	_ "github.com/aguycalled/navwallet/walletdb/bdb"
-	"github.com/aguycalled/navwallet/wtxmgr"
-	. "github.com/aguycalled/navwallet/wtxmgr"
+	"github.com/navcoin/navd/chaincfg"
+	"github.com/navcoin/navd/chaincfg/chainhash"
+	"github.com/navcoin/navd/wire"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navwallet/walletdb"
+	_ "github.com/navcoin/navwallet/walletdb/bdb"
+	"github.com/navcoin/navwallet/wtxmgr"
+	. "github.com/navcoin/navwallet/wtxmgr"
 )
 
 // Received transaction output for mainnet outpoint

@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/aguycalled/navutil/hdkeychain"
-	"github.com/aguycalled/navwallet/waddrmgr"
+	"github.com/navcoin/navutil/hdkeychain"
+	"github.com/navcoin/navwallet/waddrmgr"
 )
 
 func TestPoolEnsureUsedAddr(t *testing.T) {

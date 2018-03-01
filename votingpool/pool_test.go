@@ -11,11 +11,11 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/aguycalled/navutil/hdkeychain"
-	vp "github.com/aguycalled/navwallet/votingpool"
-	"github.com/aguycalled/navwallet/waddrmgr"
-	"github.com/aguycalled/navwallet/walletdb"
-	_ "github.com/aguycalled/navwallet/walletdb/bdb"
+	"github.com/navcoin/navutil/hdkeychain"
+	vp "github.com/navcoin/navwallet/votingpool"
+	"github.com/navcoin/navwallet/waddrmgr"
+	"github.com/navcoin/navwallet/walletdb"
+	_ "github.com/navcoin/navwallet/walletdb/bdb"
 )
 
 func TestLoadPoolAndDepositScript(t *testing.T) {
