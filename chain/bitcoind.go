@@ -10,15 +10,15 @@ import (
 	"time"
 
 	"github.com/lightninglabs/gozmq"
-	"github.com/roasbeef/btcd/btcjson"
-	"github.com/roasbeef/btcd/chaincfg"
-	"github.com/roasbeef/btcd/chaincfg/chainhash"
-	"github.com/roasbeef/btcd/rpcclient"
-	"github.com/roasbeef/btcd/txscript"
-	"github.com/roasbeef/btcd/wire"
-	"github.com/roasbeef/btcutil"
-	"github.com/roasbeef/btcwallet/waddrmgr"
-	"github.com/roasbeef/btcwallet/wtxmgr"
+	"github.com/navcoin/navd/btcjson"
+	"github.com/navcoin/navd/chaincfg"
+	"github.com/navcoin/navd/chaincfg/chainhash"
+	"github.com/navcoin/navd/rpcclient"
+	"github.com/navcoin/navd/txscript"
+	"github.com/navcoin/navd/wire"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navwallet/waddrmgr"
+	"github.com/navcoin/navwallet/wtxmgr"
 )
 
 // BitcoindClient represents a persistent client connection to a bitcoind server
@@ -187,7 +187,7 @@ func (c *BitcoindClient) GetTxOut(txHash *chainhash.Hash, index uint32,
 }
 
 // NotifyReceived updates the watch list with the passed addresses.
-func (c *BitcoindClient) NotifyReceived(addrs []btcutil.Address) error {
+func (c *BitcoindClient) NotifyReceived(addrs []navutil.Address) error {
 	select {
 	case c.rescanUpdate <- addrs:
 	case <-c.quit:
@@ -219,7 +219,7 @@ func (c *BitcoindClient) NotifyBlocks() error {
 }
 
 // LoadTxFilter updates the transaction watchlists for the client. Acceptable
-// arguments after `reset` are any combination of []btcutil.Address,
+// arguments after `reset` are any combination of []navutil.Address,
 // []wire.OutPoint, []*wire.OutPoint, []chainhash.Hash, and []*chainhash.Hash.
 func (c *BitcoindClient) LoadTxFilter(reset bool,
 	watchLists ...interface{}) error {
@@ -249,7 +249,7 @@ func (c *BitcoindClient) LoadTxFilter(reset bool,
 			sendList(list)
 		case []*wire.OutPoint:
 			sendList(list)
-		case []btcutil.Address:
+		case []navutil.Address:
 			sendList(list)
 		case []chainhash.Hash:
 			sendList(list)
@@ -305,7 +305,7 @@ func (c *BitcoindClient) RescanBlocks(blockHashes []chainhash.Hash) (
 // Rescan rescans from the block with the given hash until the current block,
 // after adding the passed addresses and outpoints to the client's watch list.
 func (c *BitcoindClient) Rescan(blockHash *chainhash.Hash,
-	addrs []btcutil.Address, outPoints []*wire.OutPoint) error {
+	addrs []navutil.Address, outPoints []*wire.OutPoint) error {
 
 	if blockHash == nil {
 		return errors.New("rescan requires a starting block hash")
@@ -514,7 +514,7 @@ func (c *BitcoindClient) onRescanFinished(hash *chainhash.Hash, height int32, bl
 }
 
 // socketHandler reads events from the ZMQ socket, processes them as
-// appropriate, and queues them as btcd or neutrino would.
+// appropriate, and queues them as navd or neutrino would.
 func (c *BitcoindClient) socketHandler(zmqClient *gozmq.Conn) {
 	defer c.wg.Done()
 	defer zmqClient.Close()
@@ -552,7 +552,7 @@ mainLoop:
 					c.watchOutPoints =
 						make(map[wire.OutPoint]struct{})
 					c.clientMtx.Unlock()
-				case []btcutil.Address:
+				case []navutil.Address:
 					// We're updating monitored addresses.
 					c.clientMtx.Lock()
 					for _, addr := range e {
@@ -961,7 +961,7 @@ func (c *BitcoindClient) filterTx(tx *wire.MsgTx,
 	blockDetails *btcjson.BlockDetails, notify bool) (bool,
 	*wtxmgr.TxRecord, error) {
 
-	txDetails := btcutil.NewTx(tx)
+	txDetails := navutil.NewTx(tx)
 	if blockDetails != nil {
 		txDetails.SetIndex(blockDetails.Index)
 	}

@@ -11,13 +11,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/roasbeef/btcd/btcec"
-	"github.com/roasbeef/btcd/chaincfg"
-	"github.com/roasbeef/btcutil"
-	"github.com/roasbeef/btcutil/hdkeychain"
-	"github.com/roasbeef/btcwallet/internal/zero"
-	"github.com/roasbeef/btcwallet/snacl"
-	"github.com/roasbeef/btcwallet/walletdb"
+	"github.com/navcoin/navd/btcec"
+	"github.com/navcoin/navd/chaincfg"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navutil/hdkeychain"
+	"github.com/navcoin/navwallet/internal/zero"
+	"github.com/navcoin/navwallet/snacl"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 const (
@@ -522,7 +522,7 @@ func (m *Manager) loadAccountInfo(ns walletdb.ReadBucket, account uint32) (*acco
 	if err != nil {
 		return nil, err
 	}
-	// TODO(roasbeef): default type??
+	// TODO(navcoin): default type??
 	lastExtAddr, err := m.keyToManaged(lastExtKey, adtChainWitness,
 		account, branch, index)
 	if err != nil {
@@ -696,7 +696,7 @@ func (m *Manager) rowInterfaceToManaged(ns walletdb.ReadBucket, rowInterface int
 // caches the associated managed address.
 //
 // This function MUST be called with the manager lock held for writes.
-func (m *Manager) loadAndCacheAddress(ns walletdb.ReadBucket, address btcutil.Address) (ManagedAddress, error) {
+func (m *Manager) loadAndCacheAddress(ns walletdb.ReadBucket, address navutil.Address) (ManagedAddress, error) {
 	// Attempt to load the raw address information from the database.
 	rowInterface, err := fetchAddress(ns, address.ScriptAddress())
 	if err != nil {
@@ -727,17 +727,17 @@ func (m *Manager) loadAndCacheAddress(ns walletdb.ReadBucket, address btcutil.Ad
 // transactions such as the associated private key for pay-to-pubkey and
 // pay-to-pubkey-hash addresses and the script associated with
 // pay-to-script-hash addresses.
-func (m *Manager) Address(ns walletdb.ReadBucket, address btcutil.Address) (ManagedAddress, error) {
+func (m *Manager) Address(ns walletdb.ReadBucket, address navutil.Address) (ManagedAddress, error) {
 	// ScriptAddress will only return a script hash if we're
 	// accessing an address that is either PKH or SH. In
 	// the event we're passed a PK address, convert the
 	// PK to PKH address so that we can access it from
 	// the addrs map and database.
-	if pka, ok := address.(*btcutil.AddressPubKey); ok {
+	if pka, ok := address.(*navutil.AddressPubKey); ok {
 		address = pka.AddressPubKeyHash()
 	}
 
-	// TODO(roasbeef): also need to distinguish p2wkh from p2pkh
+	// TODO(navcoin): also need to distinguish p2wkh from p2pkh
 
 	// Return the address from cache if it's available.
 	//
@@ -758,7 +758,7 @@ func (m *Manager) Address(ns walletdb.ReadBucket, address btcutil.Address) (Mana
 }
 
 // AddrAccount returns the account to which the given address belongs.
-func (m *Manager) AddrAccount(ns walletdb.ReadBucket, address btcutil.Address) (uint32, error) {
+func (m *Manager) AddrAccount(ns walletdb.ReadBucket, address navutil.Address) (uint32, error) {
 	account, err := fetchAddrAccount(ns, address.ScriptAddress())
 	if err != nil {
 		return 0, maybeConvertDbError(err)
@@ -1035,7 +1035,7 @@ func (m *Manager) existsAddress(ns walletdb.ReadBucket, addressID []byte) bool {
 // watching-only, or not for the same network as the key trying to be imported.
 // It will also return an error if the address already exists.  Any other errors
 // returned are generally unexpected.
-func (m *Manager) ImportPrivateKey(ns walletdb.ReadWriteBucket, wif *btcutil.WIF, bs *BlockStamp) (ManagedPubKeyAddress, error) {
+func (m *Manager) ImportPrivateKey(ns walletdb.ReadWriteBucket, wif *navutil.WIF, bs *BlockStamp) (ManagedPubKeyAddress, error) {
 	// Ensure the address is intended for network the address manager is
 	// associated with.
 	if !wif.IsForNet(m.chainParams) {
@@ -1055,7 +1055,7 @@ func (m *Manager) ImportPrivateKey(ns walletdb.ReadWriteBucket, wif *btcutil.WIF
 
 	// Prevent duplicates.
 	serializedPubKey := wif.SerializePubKey()
-	pubKeyHash := btcutil.Hash160(serializedPubKey)
+	pubKeyHash := navutil.Hash160(serializedPubKey)
 	alreadyExists := m.existsAddress(ns, pubKeyHash)
 	if alreadyExists {
 		str := fmt.Sprintf("address for public key %x already exists",
@@ -1111,7 +1111,7 @@ func (m *Manager) ImportPrivateKey(ns walletdb.ReadWriteBucket, wif *btcutil.WIF
 
 	// Create a new managed address based on the imported address.
 	var managedAddr *managedAddress
-	// TODO(roasbeef): default type? need to watch for all
+	// TODO(navcoin): default type? need to watch for all
 	if !m.watchingOnly {
 		managedAddr, err = newManagedAddress(m, ImportedAddrAccount,
 			wif.PrivKey, wif.CompressPubKey, adtChain)
@@ -1154,7 +1154,7 @@ func (m *Manager) ImportScript(ns walletdb.ReadWriteBucket, script []byte, bs *B
 	}
 
 	// Prevent duplicates.
-	scriptHash := btcutil.Hash160(script)
+	scriptHash := navutil.Hash160(script)
 	alreadyExists := m.existsAddress(ns, scriptHash)
 	if alreadyExists {
 		str := fmt.Sprintf("address for script hash %x already exists",
@@ -1383,7 +1383,7 @@ func (m *Manager) Unlock(ns walletdb.ReadBucket, passphrase []byte) error {
 			return managerError(ErrCrypto, str, err)
 		}
 
-		// TODO(roasbeef): don't need to do anythign further?
+		// TODO(navcoin): don't need to do anythign further?
 		switch a := info.managedAddr.(type) {
 		case *managedAddress:
 			a.privKeyEncrypted = privKeyEncrypted
@@ -1409,7 +1409,7 @@ func (m *Manager) fetchUsed(ns walletdb.ReadBucket, addressID []byte) bool {
 }
 
 // MarkUsed updates the used flag for the provided address.
-func (m *Manager) MarkUsed(ns walletdb.ReadWriteBucket, address btcutil.Address) error {
+func (m *Manager) MarkUsed(ns walletdb.ReadWriteBucket, address navutil.Address) error {
 	addressID := address.ScriptAddress()
 	err := markAddressUsed(ns, addressID)
 	if err != nil {
@@ -1540,7 +1540,7 @@ func (m *Manager) nextAddresses(ns walletdb.ReadWriteBucket, account uint32, num
 			if err != nil {
 				return nil, maybeConvertDbError(err)
 			}
-		case *scriptAddress: // TODO(roasbeef): no longer needed?
+		case *scriptAddress: // TODO(navcoin): no longer needed?
 			encryptedHash, err := m.cryptoKeyPub.Encrypt(a.AddrHash())
 			if err != nil {
 				str := fmt.Sprintf("failed to encrypt script hash %x",
@@ -1901,7 +1901,7 @@ func (m *Manager) ForEachActiveAccountAddress(ns walletdb.ReadBucket, account ui
 
 // ForEachActiveAddress calls the given function with each active address
 // stored in the manager, breaking early on error.
-func (m *Manager) ForEachActiveAddress(ns walletdb.ReadBucket, fn func(addr btcutil.Address) error) error {
+func (m *Manager) ForEachActiveAddress(ns walletdb.ReadBucket, fn func(addr navutil.Address) error) error {
 	m.mtx.Lock()
 	defer m.mtx.Unlock()
 

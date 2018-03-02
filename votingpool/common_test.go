@@ -11,16 +11,16 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/btcsuite/btclog"
-	"github.com/roasbeef/btcwallet/waddrmgr"
-	"github.com/roasbeef/btcwallet/walletdb"
+	"github.com/navcoin/navlog"
+	"github.com/navcoin/navwallet/waddrmgr"
+	"github.com/navcoin/navwallet/walletdb"
 )
 
 func init() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	// Enable logging (Debug level) to aid debugging failing tests.
-	logger, err := btclog.NewLoggerFromWriter(os.Stdout, btclog.DebugLvl)
+	logger, err := navlog.NewLoggerFromWriter(os.Stdout, navlog.DebugLvl)
 	if err != nil {
 		fmt.Printf("Failed to initialize stdout logger: %v\n", err)
 		os.Exit(1)

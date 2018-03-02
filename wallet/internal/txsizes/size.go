@@ -5,10 +5,10 @@
 package txsizes
 
 import (
-	"github.com/roasbeef/btcd/blockchain"
-	"github.com/roasbeef/btcd/wire"
+	"github.com/navcoin/navd/blockchain"
+	"github.com/navcoin/navd/wire"
 
-	h "github.com/roasbeef/btcwallet/internal/helpers"
+	h "github.com/navcoin/navwallet/internal/helpers"
 )
 
 // Worst case script and input/output size estimates.

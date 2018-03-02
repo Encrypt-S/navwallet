@@ -12,15 +12,15 @@ import (
 	"path/filepath"
 
 	"github.com/jessevdk/go-flags"
-	"github.com/roasbeef/btcutil"
-	"github.com/roasbeef/btcwallet/walletdb"
-	_ "github.com/roasbeef/btcwallet/walletdb/bdb"
-	"github.com/roasbeef/btcwallet/wtxmgr"
+	"github.com/navcoin/navutil"
+	"github.com/navcoin/navwallet/walletdb"
+	_ "github.com/navcoin/navwallet/walletdb/bdb"
+	"github.com/navcoin/navwallet/wtxmgr"
 )
 
 const defaultNet = "mainnet"
 
-var datadir = btcutil.AppDataDir("btcwallet", false)
+var datadir = navutil.AppDataDir("navwallet", false)
 
 // Flags.
 var opts = struct {
@@ -81,7 +81,7 @@ func mainInt() int {
 	}
 
 	for !opts.Force {
-		fmt.Print("Drop all btcwallet transaction history? [y/N] ")
+		fmt.Print("Drop all navwallet transaction history? [y/N] ")
 
 		scanner := bufio.NewScanner(bufio.NewReader(os.Stdin))
 		if !scanner.Scan() {
