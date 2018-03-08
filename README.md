@@ -213,6 +213,7 @@ verify the signature perform the following:
   git tag -v TAG_NAME
   ```
 
-## License
 
-navwallet is licensed under the liberal ISC License.
+License
+---------------------
+Distributed under the [MIT software license](http://www.opensource.org/licenses/mit-license.php).
